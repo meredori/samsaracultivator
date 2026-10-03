@@ -1,0 +1,51 @@
+name: Pages
+
+# Hosts the web build on GitHub Pages from the gh-pages branch:
+#   main         -> https://meredori.github.io/samsaracultivator/
+#   pull request -> https://meredori.github.io/samsaracultivator/pr-preview/pr-<number>/
+# PR previews are removed when the PR closes.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# Every deploy writes to the same gh-pages branch, so never run two at once.
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        if: github.event.action != 'closed'
+        with:
+          node-version: 22
+          cache: npm
+      - if: github.event.action != 'closed'
+        run: npm ci && npm run build
+
+      - name: Deploy PR preview
+        if: github.event_name == 'pull_request'
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: dist
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+
+      - name: Deploy main site
+        if: github.event_name == 'push'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          branch: gh-pages
+          clean-exclude: pr-preview/
+          force: false
