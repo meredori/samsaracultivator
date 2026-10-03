@@ -1,8 +1,9 @@
 name: Desktop builds
 
-# Windows and Linux builds of the Tauri app.
-#   pull request into main -> installers attached to the workflow run as artifacts
-#   push to main (merge)   -> prerelease "build-<run>" with the installers as release assets
+# Windows and Linux builds of the Tauri app. Feature PRs go into develop and
+# skip this; only the release path develop -> main builds installers.
+#   pull request into main (from develop) -> installers attached to the workflow run as artifacts
+#   push to main (release merge)          -> prerelease "build-<run>" with the installers as release assets
 
 on:
   pull_request:
