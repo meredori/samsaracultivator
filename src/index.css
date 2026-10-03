@@ -1,0 +1,42 @@
+:root {
+  --bg: #f4ecd8;
+  --ink: #2f2a24;
+  --muted: #8a7f6e;
+  --line: #d9ccab;
+  font-family: system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+}
+
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: grid;
+  gap: 16px;
+}
+
+.lifebar {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+}
+
+.scene canvas {
+  display: block;
+  max-width: 100%;
+  image-rendering: pixelated;
+  border: 1px solid var(--line);
+}
+
+.actions button {
+  font: inherit;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--ink);
+  cursor: pointer;
+}
