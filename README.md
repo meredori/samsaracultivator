@@ -31,11 +31,15 @@ npm run tauri build  # desktop installers
 
 Tauri prerequisites per OS: https://v2.tauri.app/start/prerequisites/
 
+## Branches
+
+Feature branches open PRs into `develop`. Releases are PRs from `develop` into `main`.
+
 ## CI and builds
 
-- **CI** (`ci.yml`), on every PR and push to main: typecheck, lint, Vitest, build, Playwright smoke test, Tauri `cargo check`.
-- **Pages** (`pages.yml`): main is hosted at https://meredori.github.io/samsaracultivator/ and every PR gets a preview at `.../pr-preview/pr-<number>/`, removed when the PR closes. Pages must be set to deploy from the `gh-pages` branch.
-- **Desktop builds** (`desktop.yml`): PRs into main build Windows (`.msi`, `.exe`) and Linux (`.AppImage`, `.deb`, `.rpm`) installers as workflow artifacts; each merge to main publishes them as a `build-<run>` prerelease.
+- **CI** (`ci.yml`), on every PR and on pushes to `develop` and `main`: typecheck, lint, Vitest, build, Playwright smoke test, Tauri `cargo check`.
+- **Pages** (`pages.yml`): `main` is hosted at https://meredori.github.io/samsaracultivator/, `develop` at `.../develop/`, and every PR gets a preview at `.../pr-preview/pr-<number>/`, removed when the PR closes. Pages must be set to deploy from the `gh-pages` branch.
+- **Desktop builds** (`desktop.yml`): release PRs (`develop` into `main`) build Windows (`.msi`, `.exe`) and Linux (`.AppImage`, `.deb`, `.rpm`) installers as workflow artifacts; each release merge into `main` publishes them as a `build-<run>` prerelease.
 
 ## UI mockup
 
