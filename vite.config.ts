@@ -19,6 +19,10 @@ export default defineConfig({
     target: process.env.TAURI_ENV_PLATFORM === "windows" ? "chrome105" : "safari15",
     minify: !process.env.TAURI_ENV_DEBUG ? "oxc" : false,
     sourcemap: !!process.env.TAURI_ENV_DEBUG,
+    rollupOptions: {
+      // mockup.html is the static UI mockup built from the concept art
+      input: ["index.html", "mockup.html"],
+    },
   },
   test: {
     include: ["src/**/*.test.ts"],

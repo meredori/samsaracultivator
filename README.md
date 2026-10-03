@@ -30,3 +30,9 @@ npm run tauri build  # desktop installers
 ```
 
 Tauri prerequisites per OS: https://v2.tauri.app/start/prerequisites/
+
+## UI mockup
+
+`npm run dev`, then open http://localhost:5173/mockup.html for a clickable mockup of the main screen, built from the concept art in `art/concepts/`. It uses static placeholder data (`src/mockup/data.ts`) and a throwaway store, not the simulation; pick an action card to change the scene, and the pause button stops time. The layout targets a window around 1280px wide or more.
+
+Sprites in `src/assets/sprites/` are generated from the concept renders with `python3 tools/pixelize.py` (needs Pillow), which reduces each ~1254px render back to its ~100px pixel grid.
