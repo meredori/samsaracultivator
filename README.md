@@ -31,8 +31,14 @@ npm run tauri build  # desktop installers
 
 Tauri prerequisites per OS: https://v2.tauri.app/start/prerequisites/
 
+## CI and builds
+
+- **CI** (`ci.yml`), on every PR and push to main: typecheck, lint, Vitest, build, Playwright smoke test, Tauri `cargo check`.
+- **Pages** (`pages.yml`): main is hosted at https://meredori.github.io/samsaracultivator/ and every PR gets a preview at `.../pr-preview/pr-<number>/`, removed when the PR closes. Pages must be set to deploy from the `gh-pages` branch.
+- **Desktop builds** (`desktop.yml`): PRs into main build Windows (`.msi`, `.exe`) and Linux (`.AppImage`, `.deb`, `.rpm`) installers as workflow artifacts; each merge to main publishes them as a `build-<run>` prerelease.
+
 ## UI mockup
 
-`npm run dev`, then open http://localhost:5173/mockup.html for a clickable mockup of the main screen, built from the concept art in `art/concepts/`. It uses static placeholder data (`src/mockup/data.ts`) and a throwaway store, not the simulation; pick an action card to change the scene, and the pause button stops time. The layout targets a window around 1280px wide or more.
+`npm run dev`, then open http://localhost:5173/mockup.html (or `mockup.html` on the Pages site or a PR preview) for a clickable mockup of the main screen, built from the concept art in `art/concepts/`. It uses static placeholder data (`src/mockup/data.ts`) and a throwaway store, not the simulation; pick an action card to change the scene, and the pause button stops time. The layout targets a window around 1280px wide or more.
 
 Sprites in `src/assets/sprites/` are generated from the concept renders with `python3 tools/pixelize.py` (needs Pillow), which reduces each ~1254px render back to its ~100px pixel grid.

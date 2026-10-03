@@ -8,6 +8,7 @@ export default defineConfig({
     launchOptions: { executablePath: process.env.PW_CHROMIUM_PATH || undefined },
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",
   webServer: {
     command: "npm run dev",
     url: "http://localhost:5173",
