@@ -6,6 +6,9 @@ const host = process.env.TAURI_DEV_HOST;
 
 export default defineConfig({
   plugins: [react()],
+  // Relative asset paths so the same build works at the Pages root, under
+  // pr-preview/pr-N/, and inside the Tauri webview.
+  base: "./",
   clearScreen: false,
   server: {
     port: 5173,
