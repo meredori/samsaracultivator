@@ -1,0 +1,220 @@
+/* Layout for the component gallery page only. */
+body {
+  margin: 0;
+  background: #f3efe5;
+}
+
+.gal {
+  min-height: 100vh;
+  padding-bottom: 48px;
+}
+
+.gal-header {
+  position: relative;
+  padding: 20px 16px 14px;
+  border-bottom: 1px solid var(--sc-line-strong);
+  background:
+    linear-gradient(180deg, transparent 55%, rgb(170 180 177 / 0.35) 100%),
+    linear-gradient(#f7f5ef, #e9ebe6);
+}
+.gal-header h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 20px;
+}
+.gal-logo,
+.gal-logo-sample {
+  font-family: var(--sc-font-brush);
+  font-size: clamp(30px, 6vw, 46px);
+  line-height: 1.1;
+  color: #1d1d1b;
+}
+.gal-logo-sample {
+  font-size: 30px;
+}
+.gal-title {
+  font-size: clamp(18px, 3vw, 26px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sc-navy);
+}
+.gal-header p {
+  margin-top: 4px;
+  color: var(--sc-muted);
+}
+.gal-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 12px;
+  font-size: var(--sc-text-sm);
+}
+.gal-toc a {
+  color: var(--sc-navy-2);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.gal-toc a:hover {
+  border-bottom-color: currentColor;
+}
+
+.gal-main {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.gal-section {
+  margin-top: 28px;
+  scroll-margin-top: 12px;
+}
+.gal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  grid-auto-flow: dense;
+  gap: 14px;
+  margin-top: 12px;
+  align-items: start;
+}
+@media (min-width: 700px) {
+  .gal-specimen--wide {
+    grid-column: span 2;
+  }
+}
+
+.gal-specimen {
+  margin: 0;
+  min-width: 0;
+  padding: 10px 12px 14px;
+  background: rgb(251 249 243 / 0.6);
+  border: 1px solid var(--sc-line);
+}
+.gal-specimen figcaption {
+  font-size: var(--sc-text-md);
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--sc-ink);
+}
+.gal-specimen__body {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+.gal-specimen__body > .sc-btn--tertiary {
+  justify-self: center;
+}
+
+.gal-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.gal-row--tip {
+  padding-top: 100px;
+}
+.gal-stack {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.gal-stack--tight {
+  gap: 6px;
+}
+.gal-cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+}
+.gal-note {
+  padding: 8px 4px;
+  font-size: var(--sc-text-sm);
+  color: var(--sc-muted);
+}
+
+.gal-scroll {
+  overflow-x: auto;
+}
+.gal-btn-table {
+  border-collapse: separate;
+  border-spacing: 10px 8px;
+  margin: -8px -10px;
+}
+.gal-btn-table th {
+  font-weight: 500;
+  color: var(--sc-muted);
+  text-align: left;
+  font-size: var(--sc-text-sm);
+}
+.gal-btn-table thead th {
+  text-align: center;
+}
+.gal-btn-table .sc-btn {
+  width: 100%;
+  min-width: 96px;
+}
+
+.gal-thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+.gal-thumbs figure {
+  margin: 0;
+}
+.gal-thumbs figcaption {
+  margin-top: 4px;
+  font-size: var(--sc-text-sm);
+  color: var(--sc-muted);
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.gal-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr));
+  gap: 10px;
+}
+.gal-cards--2 {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 130px), 1fr));
+}
+
+.gal-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+}
+.gal-swatches div {
+  display: grid;
+  gap: 2px;
+  font-size: var(--sc-text-sm);
+}
+.gal-swatches span {
+  height: 48px;
+  border: 1px solid var(--sc-line-strong);
+  border-radius: var(--sc-radius);
+}
+.gal-swatches code,
+.gal-space code {
+  font-size: 11px;
+  color: var(--sc-muted);
+}
+.gal-space {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.gal-space span {
+  height: 14px;
+  background: var(--sc-blue-light);
+  border: 1px solid var(--sc-blue);
+}
+.gal-radius {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 40px;
+  border: 1.5px solid var(--sc-navy-3);
+  background: var(--sc-paper);
+  font-size: var(--sc-text-sm);
+}

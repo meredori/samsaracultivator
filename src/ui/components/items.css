@@ -1,0 +1,346 @@
+/* Declarations using color-mix() are preceded by a plain fallback for webviews without it (Safari 15 target). */
+/* ---------- slot ---------- */
+.sc-slot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 1.5px solid var(--rarity, var(--sc-line-strong));
+  border-radius: var(--sc-radius);
+  background: radial-gradient(circle at 50% 40%, #fff 0, var(--rarity-soft, var(--sc-paper-2)) 80%);
+  color: var(--rarity, var(--sc-muted));
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.75),
+    0 1px 1px rgb(0 0 0 / 0.08);
+}
+.sc-slot svg {
+  width: 56%;
+  height: 56%;
+}
+.sc-slot--sm {
+  width: 42px;
+  height: 42px;
+}
+.sc-slot--lg {
+  width: 68px;
+  height: 68px;
+}
+.sc-slot:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.75),
+    0 3px 6px rgb(0 0 0 / 0.12);
+}
+.sc-slot.is-selected {
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.75),
+    0 0 0 2px var(--sc-paper),
+    0 0 0 4px var(--sc-navy-2);
+}
+.sc-slot--empty {
+  border-style: dashed;
+  background: var(--sc-paper-2);
+  color: var(--sc-faint);
+  cursor: default;
+}
+.sc-slot--empty:not(:disabled) {
+  cursor: pointer;
+}
+.sc-slot--empty svg {
+  width: 40%;
+  height: 40%;
+}
+.sc-slot__count {
+  position: absolute;
+  right: 3px;
+  bottom: 1px;
+  font-size: var(--sc-text-xs);
+  font-weight: 600;
+  color: var(--sc-ink);
+  text-shadow:
+    0 0 2px #fff,
+    0 0 2px #fff;
+}
+.sc-slot.sc-rarity--mythic,
+.sc-slot.sc-rarity--epic,
+.sc-slot.sc-rarity--legendary {
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.75),
+    0 0 6px var(--rarity);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.75),
+    0 0 6px color-mix(in srgb, var(--rarity) 50%, transparent);
+}
+
+/* ---------- chips ---------- */
+.sc-itemchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px 3px 6px;
+  border: 1px solid var(--rarity);
+  border-radius: var(--sc-radius);
+  background: var(--rarity-soft);
+  color: var(--rarity);
+}
+.sc-itemchip svg {
+  width: 20px;
+  height: 20px;
+}
+.sc-itemchip b {
+  color: var(--sc-ink);
+  font-weight: 600;
+  font-size: var(--sc-text-sm);
+}
+
+.sc-reschip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 1px solid var(--sc-line);
+  border-radius: var(--sc-radius);
+  background: var(--sc-paper);
+  text-align: left;
+  box-shadow: inset 0 -2px 0 var(--sc-paper-sunk);
+}
+button.sc-reschip:hover {
+  background: #fff;
+}
+.sc-reschip svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  color: var(--sc-jade);
+}
+.sc-reschip__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sc-reschip__amount {
+  font-weight: 600;
+  font-size: var(--sc-text-lg);
+}
+
+/* ---------- equipment ---------- */
+.sc-equip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 10px;
+}
+.sc-equip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.sc-equip__slot {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 1.5px solid var(--rarity, var(--sc-line-strong));
+  border-radius: var(--sc-radius-lg);
+  background: radial-gradient(circle at 50% 40%, #fbfaf6 0, var(--rarity-soft, #ebe7de) 85%);
+  color: #a9a395;
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.08);
+}
+.sc-equip__slot svg {
+  width: 55%;
+  height: 55%;
+}
+.sc-equip__slot.is-filled {
+  color: var(--rarity);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.7);
+}
+.sc-equip__slot:hover:not(:disabled) {
+  background: #fff;
+}
+.sc-equip.is-locked .sc-equip__slot {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.sc-equip__label {
+  font-size: var(--sc-text-sm);
+  color: var(--sc-muted);
+}
+
+/* ---------- inventory grid ---------- */
+.sc-inventory {
+  display: grid;
+  gap: 10px;
+}
+.sc-inventory__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 56px);
+  gap: 10px;
+}
+
+/* ---------- info card ---------- */
+.sc-iteminfo {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--sc-line);
+  background: var(--sc-paper);
+}
+.sc-iteminfo__body {
+  min-width: 0;
+}
+.sc-iteminfo__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+.sc-iteminfo h4 {
+  font-size: var(--sc-text-lg);
+  font-weight: 600;
+}
+.sc-iteminfo p {
+  font-size: var(--sc-text-sm);
+  color: var(--sc-muted);
+}
+.sc-iteminfo__side {
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+}
+.sc-iteminfo__count {
+  font-size: var(--sc-text-lg);
+  white-space: nowrap;
+}
+
+.sc-itemcard {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 12px;
+  border: 1px solid var(--sc-line);
+  border-top: 3px solid var(--rarity);
+  background: var(--sc-paper);
+}
+.sc-itemcard__top {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.sc-itemcard__meta {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.sc-itemcard h4 {
+  font-size: var(--sc-text-lg);
+  font-weight: 600;
+}
+.sc-itemcard__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.sc-itemcard__own {
+  font-size: var(--sc-text-sm);
+}
+.sc-itemcard__desc {
+  font-size: var(--sc-text-sm);
+  color: var(--sc-muted);
+}
+
+/* ---------- item tooltip ---------- */
+.sc-itemtip {
+  display: grid;
+  gap: 8px;
+  width: 260px;
+  max-width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #0f1923;
+  border-radius: var(--sc-radius);
+  background: linear-gradient(160deg, #263c50, #1b2b3a);
+  color: #e3dece;
+  font-size: var(--sc-text-sm);
+  text-align: left;
+  box-shadow:
+    inset 0 0 0 1px var(--rarity),
+    var(--sc-shadow-lg);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--rarity) 60%, transparent),
+    var(--sc-shadow-lg);
+}
+.sc-itemtip.sc-rarity--epic {
+  background: linear-gradient(160deg, #3d2c5e, #241a38);
+}
+.sc-itemtip.sc-rarity--legendary {
+  background: linear-gradient(160deg, #4a3518, #2a1f10);
+}
+.sc-itemtip.sc-rarity--mythic {
+  background: linear-gradient(160deg, #5a1a2a, #2e0d16);
+}
+.sc-itemtip.sc-rarity--rare {
+  background: linear-gradient(160deg, #22406a, #172b45);
+}
+.sc-itemtip__head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.sc-itemtip__head strong {
+  display: block;
+  font-size: var(--sc-text-lg);
+  font-weight: 600;
+  color: #fff;
+}
+.sc-itemtip__head span {
+  color: #e3dece;
+  color: color-mix(in srgb, var(--rarity) 55%, #fff);
+}
+.sc-itemtip dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 14px;
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px solid rgb(255 255 255 / 0.12);
+}
+.sc-itemtip dt {
+  color: var(--sc-gold-light);
+}
+.sc-itemtip dd {
+  margin: 0;
+  text-align: right;
+}
+
+/* ---------- rarity row ---------- */
+.sc-rarityrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px 4px 4px;
+  border: 1px solid var(--rarity);
+  border: 1px solid color-mix(in srgb, var(--rarity) 40%, transparent);
+  border-radius: var(--sc-radius);
+  background: var(--rarity-soft);
+}
+.sc-rarityrow__label {
+  flex: 1;
+  color: var(--rarity);
+}
+.sc-rarityrow b {
+  font-weight: 600;
+}
+
+.sc-iconrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
