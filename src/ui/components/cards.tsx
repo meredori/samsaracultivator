@@ -1,5 +1,5 @@
 import { AlertTriangle, Check, CircleCheck, Clock, Hourglass, Lock, Mountain, Shield, X } from "lucide-react";
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { Badge, Button, Chevron, Emblem, ProgressBar, Scene, StepProgress, type SceneProps } from "./primitives";
 import { cx, RISK_LABEL, RISK_TONE, type Icon, type Risk, type Tone } from "./types";
 import "./cards.css";
@@ -84,12 +84,13 @@ export function ManualRow({
   total: number;
   onClick?: () => void;
 }) {
+  const titleId = useId();
   return (
     <ListRow
       media={icon}
-      title={title}
+      title={<span id={titleId}>{title}</span>}
       subtitle={`Sections ${current} / ${total}`}
-      progress={<ProgressBar value={current} max={total} size="sm" showValue />}
+      progress={<ProgressBar value={current} max={total} size="sm" showValue aria-labelledby={titleId} />}
       onClick={onClick}
     />
   );
@@ -111,14 +112,15 @@ export function TechniqueRow({
   max?: number;
   onClick?: () => void;
 }) {
+  const nameId = useId();
   return (
     <ListRow
       media={icon}
-      title={name}
+      title={<span id={nameId}>{name}</span>}
       subtitle={
         <span className="sc-techrow__meta">
           <span>Lv.{level}</span>
-          <ProgressBar value={value} max={max} size="sm" showValue />
+          <ProgressBar value={value} max={max} size="sm" showValue aria-labelledby={nameId} />
         </span>
       }
       onClick={onClick}
@@ -327,13 +329,14 @@ export function ManualCard({
   onClick?: () => void;
 }) {
   const pct = percent ?? (current / Math.max(1, total)) * 100;
+  const titleId = useId();
   return (
     <article className="sc-manual">
       <div className="sc-manual__top">
         <span className="sc-manual__icon">{icon}</span>
         <div className="sc-manual__meta">
           <div className="sc-manual__head">
-            <h4>{title}</h4>
+            <h4 id={titleId}>{title}</h4>
             {path && (
               <Badge tone="blue" size="sm">
                 {path}
@@ -350,7 +353,7 @@ export function ManualCard({
               Sections {current} / {total}
             </span>
           )}
-          <ProgressBar value={pct} size="sm" showValue />
+          <ProgressBar value={pct} size="sm" showValue aria-labelledby={titleId} />
         </div>
         {onClick && (
           <button type="button" className="sc-manual__open" aria-label="Open manual" onClick={onClick}>
@@ -478,16 +481,17 @@ export function BottleneckCard({
   bottleneck?: { title: ReactNode; value?: ReactNode; description?: ReactNode };
   action?: ReactNode;
 }) {
+  const titleId = useId();
   return (
     <article className="sc-bottleneck">
       <div className="sc-bottleneck__head">
         <Emblem icon={icon} tone="navy" />
         <div>
-          <h4>{title}</h4>
+          <h4 id={titleId}>{title}</h4>
           {subtitle && <p className="sc-tone-muted">{subtitle}</p>}
         </div>
       </div>
-      <ProgressBar value={progress} showValue />
+      <ProgressBar value={progress} showValue aria-labelledby={titleId} />
       {bottleneck && (
         <div className="sc-bottleneck__alert" role="note">
           <AlertTriangle className="sc-bottleneck__alert-icon" aria-hidden />
