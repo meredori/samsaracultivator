@@ -36,3 +36,8 @@ test("component gallery fits a phone screen without sideways scrolling", async (
   const scrollWidth = await page.locator("html").evaluate((el) => el.scrollWidth);
   expect(scrollWidth).toBeLessThanOrEqual(390);
 });
+
+test("resource bars are named by their visible label", async ({ page }) => {
+  await page.goto("/components.html");
+  await expect(page.getByRole("progressbar", { name: "Vitality" })).toHaveAttribute("aria-valuenow", "72");
+});

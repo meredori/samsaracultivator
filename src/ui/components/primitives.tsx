@@ -148,6 +148,8 @@ export interface ProgressBarProps {
   showValue?: boolean | ReactNode;
   className?: string;
   "aria-label"?: string;
+  /** Id of an element that names the bar, when the label is rendered elsewhere. */
+  "aria-labelledby"?: string;
 }
 
 export function ProgressBar({
@@ -159,6 +161,7 @@ export function ProgressBar({
   showValue,
   className,
   "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
 }: ProgressBarProps) {
   const pct = clampPct(value, max);
   const labelId = useId();
@@ -176,9 +179,9 @@ export function ProgressBar({
           role="progressbar"
           aria-valuemin={0}
           aria-valuemax={max}
-          aria-valuenow={value}
-          aria-labelledby={label ? labelId : undefined}
-          aria-label={label ? undefined : ariaLabel}
+          aria-valuenow={Math.max(0, Math.min(max, value))}
+          aria-labelledby={label ? labelId : ariaLabelledBy}
+          aria-label={label || ariaLabelledBy ? undefined : ariaLabel}
         >
           <div className="sc-bar__fill" style={{ width: `${pct}%` }} />
         </div>
@@ -234,13 +237,14 @@ export interface ResourceBarProps {
 }
 
 export function ResourceBar({ icon: I, label, value, max, tone = "jade", format, valueTone }: ResourceBarProps) {
+  const labelId = useId();
   return (
     <div className="sc-resbar">
       <span className={cx("sc-resbar__label", `sc-tone--${tone}`)}>
         {I && <I aria-hidden />}
-        <span>{label}</span>
+        <span id={labelId}>{label}</span>
       </span>
-      <ProgressBar value={value} max={max} tone={tone} size="sm" aria-label={String(label)} />
+      <ProgressBar value={value} max={max} tone={tone} size="sm" aria-labelledby={labelId} />
       <span className={cx("sc-resbar__value", valueTone && `sc-tone-${valueTone}`)}>
         {format ? format(value, max) : `${value} / ${max}`}
       </span>
