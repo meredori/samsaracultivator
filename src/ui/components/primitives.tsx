@@ -203,21 +203,22 @@ export function StepProgress({
   showValue?: boolean;
   tone?: Tone;
 }) {
+  const done = Math.max(0, Math.min(total, current));
   return (
     <div
       className={cx("sc-steps", `sc-tone--${tone}`)}
       role="meter"
       aria-valuemin={0}
       aria-valuemax={total}
-      aria-valuenow={current}
-      aria-label={`${current} of ${total}`}
+      aria-valuenow={done}
+      aria-label={`${done} of ${total}`}
     >
       {Array.from({ length: total }, (_, i) => (
-        <span key={i} className={cx("sc-steps__pip", i < current && "is-done", i === current - 1 && "is-current")} />
+        <span key={i} className={cx("sc-steps__pip", i < done && "is-done", i === done - 1 && "is-current")} />
       ))}
       {showValue && (
         <span className="sc-steps__value">
-          {current} / {total}
+          {done} / {total}
         </span>
       )}
     </div>
