@@ -39,6 +39,18 @@
   --sc-rarity-rare: #3d78b5;
   --sc-rarity-epic: #7a52b3;
   --sc-rarity-legendary: #c98a1e;
+  --sc-rarity-mythic: #c2334d;
+
+  /* realms, lowest first */
+  --sc-realm-martial: #8a5a2b;
+  --sc-realm-spirit: #2f7d64;
+  --sc-realm-earth: #9a7b2f;
+  --sc-realm-heaven: #3d78b5;
+  --sc-realm-profound: #4a4fa3;
+  --sc-realm-dao: #2b2a27;
+  --sc-realm-celestial: #2a8a9a;
+  --sc-realm-divine: #c69a3c;
+  --sc-realm-primordial: #8c1f3a;
 
   /* type */
   --sc-font: "EB Garamond", Georgia, "Times New Roman", serif;

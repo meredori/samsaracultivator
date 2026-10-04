@@ -307,7 +307,7 @@
   position: relative;
   display: grid;
   gap: var(--sc-space-3);
-  padding: var(--sc-space-4) var(--sc-space-5);
+  padding: var(--sc-space-4);
   background: var(--sc-paper);
   border: 1px solid var(--sc-line-strong);
   box-shadow:
@@ -337,7 +337,8 @@
   margin-top: var(--sc-space-1);
 }
 .sc-dialog__actions .sc-btn {
-  flex: 1 1 110px;
+  /* side by side down to very narrow widths; if they do wrap, the primary stays on top */
+  flex: 1 1 88px;
   max-width: 160px;
 }
 .sc-dialog__close {

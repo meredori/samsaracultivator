@@ -151,28 +151,28 @@
 
 /* ---------- segmented ---------- */
 .sc-segmented {
+  /* wraps onto a second row when narrow; the 1px gaps show the line colour as dividers */
   display: inline-flex;
+  flex-wrap: wrap;
+  gap: 1px;
   max-width: 100%;
-  overflow-x: auto;
+  overflow: hidden;
   border: 1px solid var(--sc-line-strong);
   border-radius: var(--sc-radius);
-  background: var(--sc-paper);
-  scrollbar-width: thin;
+  background: var(--sc-line);
 }
 .sc-segmented__item {
+  flex: 1 0 auto;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 6px 16px;
+  padding: 6px 14px;
   min-height: 34px;
   border: none;
-  border-right: 1px solid var(--sc-line);
-  background: transparent;
+  background: var(--sc-paper);
   white-space: nowrap;
   color: var(--sc-ink);
-}
-.sc-segmented__item:last-child {
-  border-right: none;
 }
 .sc-segmented__item svg {
   width: 16px;
@@ -199,10 +199,14 @@
 .sc-navtabs {
   display: flex;
   overflow-x: auto;
+  scrollbar-width: none;
   border: 1px solid var(--sc-line-strong);
   border-radius: var(--sc-radius);
   background: var(--sc-paper-2);
   scrollbar-width: thin;
+}
+.sc-navtabs::-webkit-scrollbar {
+  display: none;
 }
 .sc-navtabs__tab {
   flex: 1 0 auto;

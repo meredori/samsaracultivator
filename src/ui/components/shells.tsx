@@ -220,7 +220,7 @@ export interface DialogProps {
   icon?: Icon;
   tone?: Tone;
   children?: ReactNode;
-  /** Buttons along the bottom. */
+  /** Buttons along the bottom: the primary action first, then Cancel. */
   actions?: ReactNode;
   onClose?: () => void;
   className?: string;
@@ -269,9 +269,8 @@ export function Modal({
       Array.from(node?.querySelectorAll<HTMLElement>("button, [href], input, select, textarea, [tabindex]") ?? []).filter(
         (el) => !el.hasAttribute("disabled") && el.tabIndex !== -1,
       );
-    // Focus the last action (usually the confirm button) on open.
-    const list = focusables();
-    (list[list.length - 1] ?? node)?.focus();
+    // Focus the dialog itself so Enter can't trigger a destructive action by accident.
+    node?.focus();
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {

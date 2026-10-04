@@ -94,6 +94,8 @@ import {
   RARITIES,
   RarityBadge,
   RarityRow,
+  REALMS,
+  RealmBadge,
   RequirementChecklist,
   ResourceBar,
   ResourceChip,
@@ -256,8 +258,8 @@ function Shells() {
           title="Confirm Action"
           actions={
             <>
-              <Button variant="secondary">Cancel</Button>
               <Button variant="success">Confirm</Button>
+              <Button variant="secondary">Cancel</Button>
             </>
           }
         >
@@ -275,8 +277,8 @@ function Shells() {
           tone="red"
           actions={
             <>
-              <Button variant="secondary">Cancel</Button>
               <Button variant="danger">Delete</Button>
+              <Button variant="secondary">Cancel</Button>
             </>
           }
         >
@@ -293,11 +295,11 @@ function Shells() {
         title="Confirm Action"
         actions={
           <>
-            <Button variant="secondary" onClick={close}>
-              Cancel
-            </Button>
             <Button variant="success" onClick={close}>
               Confirm
+            </Button>
+            <Button variant="secondary" onClick={close}>
+              Cancel
             </Button>
           </>
         }
@@ -311,11 +313,11 @@ function Shells() {
         icon={CircleAlert}
         actions={
           <>
-            <Button variant="secondary" onClick={close}>
-              Cancel
-            </Button>
             <Button variant="danger" onClick={close}>
               Delete
+            </Button>
+            <Button variant="secondary" onClick={close}>
+              Cancel
             </Button>
           </>
         }
@@ -548,6 +550,15 @@ function Display() {
           {RARITIES.map((r) => (
             <RarityBadge key={r} rarity={r} />
           ))}
+        </div>
+        <div className="gal-row">
+          {REALMS.map((r) => (
+            <RealmBadge key={r} realm={r} />
+          ))}
+        </div>
+        <div className="gal-row">
+          <RealmBadge realm="spirit" stage="Stage 3" />
+          <RealmBadge realm="divine" stage={9} size="sm" />
         </div>
       </Specimen>
 
@@ -973,6 +984,10 @@ function Inventory() {
         <ItemTooltip item={item("core")} />
       </Specimen>
 
+      <Specimen title="Item Tooltip (Mythic)">
+        <ItemTooltip item={item("feather")} />
+      </Specimen>
+
       <Specimen title="Rarity Treatments">
         <div className="gal-stack gal-stack--tight">
           <RarityRow icon={Leaf} rarity="common" count={12} />
@@ -980,6 +995,7 @@ function Inventory() {
           <RarityRow icon={Gem} rarity="rare" count={3} />
           <RarityRow icon={Flame} rarity="epic" count={1} />
           <RarityRow icon={Sparkles} rarity="legendary" count={1} />
+          <RarityRow icon={Crown} rarity="mythic" count={1} />
         </div>
       </Specimen>
 
@@ -1000,7 +1016,7 @@ function Inventory() {
       <Specimen title="Rarity Frames and Icon Row">
         <div className="gal-row">
           {RARITIES.map((r) => (
-            <ItemIcon key={r} icon={[Leaf, Bone, Gem, Flame, Sparkles][RARITIES.indexOf(r)]} rarity={r} size="lg" />
+            <ItemIcon key={r} icon={[Leaf, Bone, Gem, Flame, Sparkles, Crown][RARITIES.indexOf(r)]} rarity={r} size="lg" />
           ))}
         </div>
         <ItemIconRow
@@ -1131,11 +1147,11 @@ function States() {
           icon={CircleAlert}
           actions={
             <>
-              <Button variant="secondary" size="sm">
-                Cancel
-              </Button>
               <Button variant="danger" size="sm">
                 Confirm
+              </Button>
+              <Button variant="secondary" size="sm">
+                Cancel
               </Button>
             </>
           }

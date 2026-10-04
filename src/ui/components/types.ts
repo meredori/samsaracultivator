@@ -3,9 +3,9 @@ import type { LucideIcon } from "lucide-react";
 /** Colour families used across badges, bars, emblems and buttons. */
 export type Tone = "navy" | "jade" | "blue" | "gold" | "red" | "purple" | "grey";
 
-export type Rarity = "common" | "uncommon" | "rare" | "epic" | "legendary";
+export type Rarity = "common" | "uncommon" | "rare" | "epic" | "legendary" | "mythic";
 
-export const RARITIES: readonly Rarity[] = ["common", "uncommon", "rare", "epic", "legendary"];
+export const RARITIES: readonly Rarity[] = ["common", "uncommon", "rare", "epic", "legendary", "mythic"];
 
 export const RARITY_LABEL: Record<Rarity, string> = {
   common: "Common",
@@ -13,6 +13,43 @@ export const RARITY_LABEL: Record<Rarity, string> = {
   rare: "Rare",
   epic: "Epic",
   legendary: "Legendary",
+  mythic: "Mythic",
+};
+
+/** Cultivation realms, lowest first. */
+export type Realm =
+  | "martial"
+  | "spirit"
+  | "earth"
+  | "heaven"
+  | "profound"
+  | "dao"
+  | "celestial"
+  | "divine"
+  | "primordial";
+
+export const REALMS: readonly Realm[] = [
+  "martial",
+  "spirit",
+  "earth",
+  "heaven",
+  "profound",
+  "dao",
+  "celestial",
+  "divine",
+  "primordial",
+];
+
+export const REALM_LABEL: Record<Realm, string> = {
+  martial: "Martial",
+  spirit: "Spirit",
+  earth: "Earth",
+  heaven: "Heaven",
+  profound: "Profound",
+  dao: "Dao",
+  celestial: "Celestial",
+  divine: "Divine",
+  primordial: "Primordial",
 };
 
 export type Risk = "low" | "medium" | "high";

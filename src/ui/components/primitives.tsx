@@ -1,6 +1,6 @@
 import { ChevronRight, Lock } from "lucide-react";
 import { useId, type ButtonHTMLAttributes, type CSSProperties, type ReactNode } from "react";
-import { clampPct, cx, RARITY_LABEL, type Icon, type Rarity, type Tone } from "./types";
+import { clampPct, cx, RARITY_LABEL, REALM_LABEL, type Icon, type Rarity, type Realm, type Tone } from "./types";
 import "./primitives.css";
 
 /* ------------------------------------------------------------------ buttons */
@@ -114,6 +114,16 @@ export function RarityBadge({ rarity, size }: { rarity: Rarity; size?: "sm" | "m
   return (
     <span className={cx("sc-badge", "sc-badge--rarity", `sc-badge--${size ?? "md"}`, `sc-rarity--${rarity}`)}>
       {RARITY_LABEL[rarity]}
+    </span>
+  );
+}
+
+/** Cultivation realm seal, optionally with the stage, e.g. "Spirit · 3". */
+export function RealmBadge({ realm, stage, size }: { realm: Realm; stage?: ReactNode; size?: "sm" | "md" }) {
+  return (
+    <span className={cx("sc-badge", "sc-badge--realm", `sc-badge--${size ?? "md"}`, `sc-realm--${realm}`)}>
+      {REALM_LABEL[realm]}
+      {stage !== undefined && <span className="sc-badge__stage">· {stage}</span>}
     </span>
   );
 }
