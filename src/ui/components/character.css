@@ -1,0 +1,88 @@
+.sc-charsheet {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  min-width: 0;
+}
+.sc-charsheet__body {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+}
+.sc-charsheet__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.sc-charsheet__head h3 {
+  font-size: var(--sc-text-xl);
+  font-weight: 600;
+}
+@container (max-width: 360px) {
+  .sc-charsheet__portrait.sc-portrait--lg {
+    width: 96px;
+    height: 144px;
+  }
+}
+
+.sc-portraitcard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sc-portraitcard h4 {
+  font-size: var(--sc-text-lg);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.sc-life {
+  display: grid;
+  gap: 10px;
+}
+.sc-life__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.sc-life__realm {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.sc-life__realm h3 {
+  font-size: var(--sc-text-xl);
+  font-weight: 600;
+}
+.sc-life__rows {
+  border-top: 1px solid var(--sc-line);
+  padding-top: 4px;
+}
+
+.sc-scenemod {
+  display: grid;
+  gap: 8px;
+  padding: 6px 6px 10px;
+  border: 1px solid var(--sc-line);
+  background: var(--sc-paper);
+  min-width: 0;
+}
+.sc-scenemod__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 8px;
+  padding: 0 4px;
+}
+.sc-scenemod__head strong {
+  font-size: var(--sc-text-lg);
+  font-weight: 600;
+}
+.sc-scenemod .sc-progress {
+  padding: 0 4px;
+}

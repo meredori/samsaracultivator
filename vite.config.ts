@@ -23,8 +23,9 @@ export default defineConfig({
     minify: !process.env.TAURI_ENV_DEBUG ? "oxc" : false,
     sourcemap: !!process.env.TAURI_ENV_DEBUG,
     rollupOptions: {
-      // mockup.html is the static UI mockup built from the concept art
-      input: ["index.html", "mockup.html"],
+      // mockup.html is the static UI mockup built from the concept art;
+      // components.html is the UI component gallery
+      input: ["index.html", "mockup.html", "components.html"],
     },
   },
   test: {

@@ -1,0 +1,147 @@
+/*
+ * Samsara Cultivator design tokens and base styles for the component library.
+ * Tokens are prefixed --sc- so they never collide with app or mockup styles.
+ * Wrap any screen that uses the components in an element with class "sc-root".
+ */
+
+:root {
+  /* palette */
+  --sc-parchment: #f3efe5;
+  --sc-paper: #fbf9f3;
+  --sc-paper-2: #f6f2e8;
+  --sc-paper-sunk: #ece6d8;
+  --sc-line: #d9d1c0;
+  --sc-line-strong: #bfb39b;
+  --sc-ink: #2b2a27;
+  --sc-muted: #6d675d;
+  --sc-faint: #9a9284;
+
+  --sc-navy: #22374a;
+  --sc-navy-2: #2c465d;
+  --sc-navy-3: #3a5a76;
+  --sc-jade: #2f7d64;
+  --sc-jade-2: #3f9a76;
+  --sc-jade-light: #6cc39e;
+  --sc-blue: #3d78b5;
+  --sc-blue-light: #6ea4d8;
+  --sc-gold: #c69a3c;
+  --sc-gold-light: #e2bd6a;
+  --sc-red: #b0342a;
+  --sc-red-light: #d8665b;
+  --sc-purple: #6a4c9c;
+  --sc-purple-light: #9a7ccd;
+  --sc-grey: #8b8a86;
+  --sc-grey-light: #c9c6be;
+
+  /* rarity */
+  --sc-rarity-common: #8b8a86;
+  --sc-rarity-uncommon: #3f9a76;
+  --sc-rarity-rare: #3d78b5;
+  --sc-rarity-epic: #7a52b3;
+  --sc-rarity-legendary: #c98a1e;
+
+  /* type */
+  --sc-font: "EB Garamond", Georgia, "Times New Roman", serif;
+  --sc-font-brush: "Kaushan Script", "Brush Script MT", cursive;
+  --sc-text-xs: 12px;
+  --sc-text-sm: 13.5px;
+  --sc-text-md: 15px;
+  --sc-text-lg: 18px;
+  --sc-text-xl: 22px;
+
+  /* spacing, 4px base */
+  --sc-space-1: 4px;
+  --sc-space-2: 8px;
+  --sc-space-3: 12px;
+  --sc-space-4: 16px;
+  --sc-space-5: 24px;
+  --sc-space-6: 32px;
+
+  /* radius */
+  --sc-radius-sm: 3px;
+  --sc-radius: 4px;
+  --sc-radius-lg: 6px;
+
+  /* depth */
+  --sc-shadow: 0 1px 2px rgb(43 42 39 / 0.12), 0 2px 8px rgb(43 42 39 / 0.08);
+  --sc-shadow-lg: 0 6px 24px rgb(20 26 32 / 0.28);
+  --sc-focus: 0 0 0 2px var(--sc-paper), 0 0 0 4px var(--sc-blue);
+}
+
+.sc-root {
+  font-family: var(--sc-font);
+  font-size: var(--sc-text-md);
+  line-height: 1.35;
+  color: var(--sc-ink);
+  background: var(--sc-parchment);
+}
+
+.sc-root *,
+.sc-root *::before,
+.sc-root *::after {
+  box-sizing: border-box;
+}
+
+.sc-root :where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, dd, figure, blockquote) {
+  margin: 0;
+  font-weight: 500;
+}
+
+.sc-root :where(ul, ol) {
+  padding: 0;
+  list-style: none;
+}
+
+.sc-root :where(button, input, select, textarea) {
+  font: inherit;
+  color: inherit;
+}
+
+.sc-root :where(button) {
+  cursor: pointer;
+}
+
+.sc-root :where(img) {
+  image-rendering: pixelated;
+  max-width: 100%;
+}
+
+.sc-root :where(button, a, input, select, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: var(--sc-focus);
+}
+
+.sc-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* text tones shared by many components */
+.sc-tone-good {
+  color: var(--sc-jade);
+}
+.sc-tone-bad {
+  color: var(--sc-red);
+}
+.sc-tone-warn {
+  color: var(--sc-gold);
+}
+.sc-tone-info {
+  color: var(--sc-blue);
+}
+.sc-tone-muted {
+  color: var(--sc-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-root *,
+  .sc-root *::before,
+  .sc-root *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

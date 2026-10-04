@@ -46,3 +46,9 @@ Feature branches open PRs into `develop`. Releases are PRs from `develop` into `
 `npm run dev`, then open http://localhost:5173/mockup.html (or `mockup.html` on the Pages site or a PR preview) for a clickable mockup of the main screen, built from the concept art in `art/concepts/`. It uses static placeholder data (`src/mockup/data.ts`) and a throwaway store, not the simulation; pick an action card to change the scene, and the pause button stops time. The layout targets a window around 1280px wide or more.
 
 Sprites in `src/assets/sprites/` are generated from the concept renders with `python3 tools/pixelize.py` (needs Pillow), which reduces each ~1254px render back to its ~100px pixel grid.
+
+## UI components
+
+`src/ui/components` is the game's component library: buttons and form controls, windows, panels and dialogs, progress and resource bars, badges, item slots and tooltips, character and progression modules, content cards, NPC dialogue, toasts and empty/locked/loading states. Import from `src/ui/components`, and wrap screens in an element with class `sc-root` so the theme tokens (`--sc-*` in `theme.css`) and base styles apply.
+
+`npm run dev`, then open http://localhost:5173/components.html (or `components.html` on the Pages site or a PR preview) for a live gallery of every component. Resize the window to check how each one behaves at phone widths.
