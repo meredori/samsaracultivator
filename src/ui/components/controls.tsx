@@ -121,7 +121,7 @@ function useRovingKeys<T extends string>(options: TabOption<T>[], value: T, onCh
       if (next < 0) return;
       e.preventDefault();
       onChange(enabled[next].id);
-      const btn = ref.current?.querySelector<HTMLButtonElement>(`[data-id="${enabled[next].id}"]`);
+      const btn = ref.current?.querySelector<HTMLButtonElement>(`[data-id="${CSS.escape(enabled[next].id)}"]`);
       btn?.focus();
     },
   };

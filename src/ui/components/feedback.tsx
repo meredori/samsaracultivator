@@ -113,27 +113,29 @@ export function NpcDialogue({
 }) {
   return (
     <section className="sc-dialogue">
-      <Portrait src={portrait} alt="" size="md" className="sc-dialogue__portrait" />
-      <div className="sc-dialogue__speech">
-        <span className="sc-dialogue__name">{name}</span>
-        <div className="sc-dialogue__text">{children}</div>
+      <div className="sc-dialogue__grid">
+        <Portrait src={portrait} alt="" size="md" className="sc-dialogue__portrait" />
+        <div className="sc-dialogue__speech">
+          <span className="sc-dialogue__name">{name}</span>
+          <div className="sc-dialogue__text">{children}</div>
+        </div>
+        {choices && choices.length > 0 && (
+          <ul className="sc-dialogue__choices">
+            {choices.map((c) => (
+              <li key={c.id}>
+                <Button
+                  variant={c.primary ? "primary" : "secondary"}
+                  block
+                  disabled={c.disabled}
+                  onClick={() => onChoose?.(c.id)}
+                >
+                  {c.label}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-      {choices && choices.length > 0 && (
-        <ul className="sc-dialogue__choices">
-          {choices.map((c) => (
-            <li key={c.id}>
-              <Button
-                variant={c.primary ? "primary" : "secondary"}
-                block
-                disabled={c.disabled}
-                onClick={() => onChoose?.(c.id)}
-              >
-                {c.label}
-              </Button>
-            </li>
-          ))}
-        </ul>
-      )}
     </section>
   );
 }

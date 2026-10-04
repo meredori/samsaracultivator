@@ -27,6 +27,15 @@
     height: 144px;
   }
 }
+/* Webviews without container queries (Safari 15 target) fall back to the viewport width. */
+@supports not (container-type: inline-size) {
+  @media (max-width: 400px) {
+    .sc-charsheet__portrait.sc-portrait--lg {
+      width: 96px;
+      height: 144px;
+    }
+  }
+}
 
 .sc-portraitcard {
   display: flex;

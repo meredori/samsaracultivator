@@ -120,6 +120,8 @@
 /* ---------- dialogue ---------- */
 .sc-dialogue {
   container-type: inline-size;
+}
+.sc-dialogue__grid {
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-areas:
@@ -164,7 +166,7 @@
   text-align: left;
 }
 @container (max-width: 420px) {
-  .sc-dialogue {
+  .sc-dialogue__grid {
     grid-template-columns: auto 1fr;
     grid-template-areas:
       "portrait speech"
@@ -173,6 +175,21 @@
   .sc-dialogue__portrait.sc-portrait--md {
     width: 72px;
     height: 100px;
+  }
+}
+/* Webviews without container queries (Safari 15 target) fall back to the viewport width. */
+@supports not (container-type: inline-size) {
+  @media (max-width: 480px) {
+    .sc-dialogue__grid {
+      grid-template-columns: auto 1fr;
+      grid-template-areas:
+        "portrait speech"
+        "choices choices";
+    }
+    .sc-dialogue__portrait.sc-portrait--md {
+      width: 72px;
+      height: 100px;
+    }
   }
 }
 

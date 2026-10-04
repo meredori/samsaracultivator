@@ -196,6 +196,34 @@
     display: none;
   }
 }
+/* Webviews without container queries (Safari 15 target) fall back to the viewport width. */
+@supports not (container-type: inline-size) {
+  @media (max-width: 600px) {
+    .sc-window--with-nav .sc-window__body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .sc-window__nav {
+      border-right: none;
+      border-bottom: 1px solid var(--sc-line);
+      overflow-x: auto;
+    }
+    .sc-window__nav .sc-navlist ul {
+      display: flex;
+    }
+    .sc-window__nav .sc-navlist__item {
+      border-left: 1px solid transparent;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+    }
+    .sc-window__nav .sc-navlist__item[aria-current] {
+      border-bottom-color: var(--sc-navy-2);
+      border-left-color: #c7d2dc;
+    }
+    .sc-window__nav .sc-chevron {
+      display: none;
+    }
+  }
+}
 
 /* ---------- link row ---------- */
 .sc-linkrow {
