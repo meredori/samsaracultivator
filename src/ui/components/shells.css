@@ -334,13 +334,15 @@
   position: fixed;
   inset: 0;
   z-index: 1000;
-  display: grid;
-  place-items: center;
+  display: flex;
+  overflow-y: auto;
   padding: 16px;
   background: rgb(20 26 32 / 0.45);
   animation: sc-fade 0.15s ease-out;
 }
 .sc-modal__box {
+  /* auto margins centre the box but let a tall dialog scroll from its top */
+  margin: auto;
   width: min(420px, 100%);
   outline: none;
   animation: sc-rise 0.18s ease-out;

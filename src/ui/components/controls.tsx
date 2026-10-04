@@ -98,6 +98,12 @@ export interface TabOption<T extends string> {
   count?: number;
 }
 
+/** The tab that takes keyboard focus: the selected one, or the first enabled tab if that is missing or disabled. */
+function tabStop<T extends string>(options: TabOption<T>[], value: T): T | undefined {
+  const current = options.find((o) => o.id === value && !o.disabled);
+  return (current ?? options.find((o) => !o.disabled))?.id;
+}
+
 /** Arrow-key navigation shared by the tab-like controls. */
 function useRovingKeys<T extends string>(options: TabOption<T>[], value: T, onChange: (v: T) => void) {
   const ref = useRef<HTMLDivElement>(null);
@@ -109,7 +115,7 @@ function useRovingKeys<T extends string>(options: TabOption<T>[], value: T, onCh
       const idx = enabled.findIndex((o) => o.id === value);
       let next = -1;
       if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (idx + 1) % enabled.length;
-      else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (idx - 1 + enabled.length) % enabled.length;
+      else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = idx < 0 ? enabled.length - 1 : (idx - 1 + enabled.length) % enabled.length;
       else if (e.key === "Home") next = 0;
       else if (e.key === "End") next = enabled.length - 1;
       if (next < 0) return;
@@ -137,6 +143,7 @@ export function SegmentedControl<T extends string>({
   className?: string;
 }) {
   const { ref, onKeyDown } = useRovingKeys(options, value, onChange);
+  const stop = tabStop(options, value);
   return (
     <div
       ref={ref}
@@ -155,7 +162,7 @@ export function SegmentedControl<T extends string>({
             role="tab"
             data-id={o.id}
             aria-selected={selected}
-            tabIndex={selected ? 0 : -1}
+            tabIndex={o.id === stop ? 0 : -1}
             disabled={o.disabled}
             className="sc-segmented__item"
             onClick={() => onChange(o.id)}
@@ -185,6 +192,7 @@ export function NavTabs<T extends string>({
   className?: string;
 }) {
   const { ref, onKeyDown } = useRovingKeys(tabs, value, onChange);
+  const stop = tabStop(tabs, value);
   return (
     <div ref={ref} role="tablist" aria-label={label} className={cx("sc-navtabs", className)} onKeyDown={onKeyDown}>
       {tabs.map((t) => {
@@ -197,7 +205,7 @@ export function NavTabs<T extends string>({
             role="tab"
             data-id={t.id}
             aria-selected={selected}
-            tabIndex={selected ? 0 : -1}
+            tabIndex={t.id === stop ? 0 : -1}
             disabled={t.disabled}
             className="sc-navtabs__tab"
             onClick={() => onChange(t.id)}
