@@ -3,7 +3,11 @@ name: CI
 on:
   push:
     branches: [main, develop]
+  # Draft PRs only get the Pages preview (pages.yml). These checks start once
+  # the PR is marked ready for review, and run on every push after that.
+  # converted_to_draft starts a skipped run that cancels any in-flight checks.
   pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, converted_to_draft]
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -12,6 +16,7 @@ concurrency:
 jobs:
   web:
     name: Typecheck, lint, test, build
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -27,6 +32,7 @@ jobs:
 
   e2e:
     name: Playwright
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -48,6 +54,7 @@ jobs:
 
   tauri:
     name: Tauri check
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
