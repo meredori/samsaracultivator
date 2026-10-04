@@ -281,58 +281,47 @@
   border-color: color-mix(in srgb, var(--rarity) 45%, transparent);
 }
 
-/* realm badges: solid seal colours that grow more ornate with each realm */
+/* realm badges: soft tints like the rarity badges */
 .sc-badge--realm {
-  --realm: var(--sc-grey);
-  background: var(--realm);
-  color: #fff;
-  border-color: rgb(0 0 0 / 0.25);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2);
-  letter-spacing: 0.02em;
-}
-.sc-badge--realm .sc-badge__stage {
-  opacity: 0.8;
-  font-size: 0.9em;
+  background: var(--realm-soft);
+  color: var(--realm);
+  border-color: color-mix(in srgb, var(--realm) 45%, transparent);
 }
 .sc-realm--martial {
   --realm: var(--sc-realm-martial);
+  --realm-soft: #f1e4d6;
 }
 .sc-realm--spirit {
   --realm: var(--sc-realm-spirit);
+  --realm-soft: #dcece4;
 }
 .sc-realm--earth {
   --realm: var(--sc-realm-earth);
+  --realm-soft: #f2e9d0;
 }
 .sc-realm--heaven {
   --realm: var(--sc-realm-heaven);
+  --realm-soft: #dde8f4;
 }
 .sc-realm--profound {
   --realm: var(--sc-realm-profound);
+  --realm-soft: #e2e3f4;
 }
 .sc-realm--dao {
   --realm: var(--sc-realm-dao);
-  border-color: var(--sc-gold);
-}
-.sc-realm--celestial,
-.sc-realm--divine,
-.sc-realm--primordial {
-  border-color: var(--sc-gold-light);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.3),
-    0 0 6px color-mix(in srgb, var(--realm) 60%, transparent);
+  --realm-soft: #e8e6e1;
 }
 .sc-realm--celestial {
   --realm: var(--sc-realm-celestial);
-  background: linear-gradient(135deg, #3fb0c0, var(--realm) 60%, #1d5f6b);
+  --realm-soft: #d9eef1;
 }
 .sc-realm--divine {
   --realm: var(--sc-realm-divine);
-  background: linear-gradient(135deg, #f0d48a, var(--realm) 55%, #9a7128);
-  color: #3b2a0c;
+  --realm-soft: #f7ecd0;
 }
 .sc-realm--primordial {
   --realm: var(--sc-realm-primordial);
-  background: linear-gradient(135deg, #3d1430, var(--realm) 50%, #2a0d1f);
+  --realm-soft: #f3dce2;
 }
 
 /* ---------- progress ---------- */

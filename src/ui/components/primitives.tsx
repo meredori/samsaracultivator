@@ -118,12 +118,11 @@ export function RarityBadge({ rarity, size }: { rarity: Rarity; size?: "sm" | "m
   );
 }
 
-/** Cultivation realm seal, optionally with the stage, e.g. "Spirit · 3". */
-export function RealmBadge({ realm, stage, size }: { realm: Realm; stage?: ReactNode; size?: "sm" | "md" }) {
+/** Cultivation realm tag, e.g. Spirit. */
+export function RealmBadge({ realm, size }: { realm: Realm; size?: "sm" | "md" }) {
   return (
     <span className={cx("sc-badge", "sc-badge--realm", `sc-badge--${size ?? "md"}`, `sc-realm--${realm}`)}>
       {REALM_LABEL[realm]}
-      {stage !== undefined && <span className="sc-badge__stage">· {stage}</span>}
     </span>
   );
 }

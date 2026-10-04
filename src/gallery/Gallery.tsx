@@ -542,9 +542,6 @@ function Display() {
             New
           </Badge>
           <LockedBadge />
-          <Badge tone="gold" variant="outline" icon={Star}>
-            Bonus
-          </Badge>
         </div>
         <div className="gal-row">
           {RARITIES.map((r) => (
@@ -555,10 +552,6 @@ function Display() {
           {REALMS.map((r) => (
             <RealmBadge key={r} realm={r} />
           ))}
-        </div>
-        <div className="gal-row">
-          <RealmBadge realm="spirit" stage="Stage 3" />
-          <RealmBadge realm="divine" stage={9} size="sm" />
         </div>
       </Specimen>
 
