@@ -573,7 +573,7 @@ function Display() {
               </Badge>
             }
             subtitle="Sections 1 / 4"
-            progress={<ProgressBar value={18} size="sm" showValue tone="red" />}
+            progress={<ProgressBar value={18} size="sm" showValue tone="red" aria-label="Demonic Ember Manual progress" />}
             onClick={() => {}}
           />
         </div>
