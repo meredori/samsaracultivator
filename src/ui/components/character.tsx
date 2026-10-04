@@ -1,5 +1,5 @@
 import { Sprout } from "lucide-react";
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { Badge, Button, Emblem, Portrait, ProgressBar, Scene, StatList, type SceneProps, type StatRowProps } from "./primitives";
 import { cx, type Icon, type Tone } from "./types";
 import "./character.css";
@@ -80,16 +80,17 @@ export function LifeSummary({
   progress: number;
   rows?: StatRowProps[];
 }) {
+  const realmId = useId();
   return (
     <article className="sc-life">
       <div className="sc-life__head">
         <Emblem icon={icon} tone="jade" size="lg" />
         <div className="sc-life__realm">
-          <h3>{realm}</h3>
+          <h3 id={realmId}>{realm}</h3>
           <span className="sc-tone-muted">
             Stage {stage} / {stages}
           </span>
-          <ProgressBar value={progress} showValue />
+          <ProgressBar value={progress} showValue aria-labelledby={realmId} />
         </div>
       </div>
       {rows && <StatList stats={rows} className="sc-life__rows" />}
@@ -111,18 +112,19 @@ export function SceneModule({
   badgeTone?: Tone;
   progress?: number;
 }) {
+  const titleId = useId();
   return (
     <article className="sc-scenemod">
       <Scene aspect={21 / 9} {...scene} />
       <div className="sc-scenemod__head">
-        <strong>{title}</strong>
+        <strong id={titleId}>{title}</strong>
         {badge && (
           <Badge tone={badgeTone} size="sm">
             {badge}
           </Badge>
         )}
       </div>
-      {progress !== undefined && <ProgressBar value={progress} showValue />}
+      {progress !== undefined && <ProgressBar value={progress} showValue aria-labelledby={titleId} />}
     </article>
   );
 }

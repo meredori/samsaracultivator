@@ -41,3 +41,19 @@ test("resource bars are named by their visible label", async ({ page }) => {
   await page.goto("/components.html");
   await expect(page.getByRole("progressbar", { name: "Vitality" })).toHaveAttribute("aria-valuenow", "72");
 });
+
+test("every progress bar has an accessible name", async ({ page }) => {
+  await page.goto("/components.html");
+  const bars = page.getByRole("progressbar");
+  expect(await bars.count()).toBeGreaterThan(0);
+  const unnamed = await bars.evaluateAll((els) =>
+    els
+      .filter((el) => {
+        const ids = el.getAttribute("aria-labelledby")?.split(/\s+/) ?? [];
+        const fromIds = ids.map((id: string) => el.ownerDocument.getElementById(id)?.textContent?.trim() ?? "").join("");
+        return !el.getAttribute("aria-label")?.trim() && !fromIds;
+      })
+      .map((el) => el.outerHTML.slice(0, 120)),
+  );
+  expect(unnamed).toEqual([]);
+});
