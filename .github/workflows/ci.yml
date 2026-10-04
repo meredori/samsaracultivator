@@ -5,8 +5,9 @@ on:
     branches: [main, develop]
   # Draft PRs only get the Pages preview (pages.yml). These checks start once
   # the PR is marked ready for review, and run on every push after that.
+  # converted_to_draft starts a skipped run that cancels any in-flight checks.
   pull_request:
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [opened, reopened, synchronize, ready_for_review, converted_to_draft]
 
 concurrency:
   group: ci-${{ github.ref }}

@@ -9,7 +9,7 @@ on:
   # Skipped while the release PR is a draft; builds once it is ready for review.
   pull_request:
     branches: [main]
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [opened, reopened, synchronize, ready_for_review, converted_to_draft]
   push:
     branches: [main]
 
