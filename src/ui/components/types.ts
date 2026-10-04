@@ -18,7 +18,7 @@ export const RARITY_LABEL: Record<Rarity, string> = {
 
 /** Cultivation realms, lowest first. */
 export type Realm =
-  | "martial"
+  | "mortal"
   | "spirit"
   | "earth"
   | "heaven"
@@ -29,7 +29,7 @@ export type Realm =
   | "primordial";
 
 export const REALMS: readonly Realm[] = [
-  "martial",
+  "mortal",
   "spirit",
   "earth",
   "heaven",
@@ -41,7 +41,7 @@ export const REALMS: readonly Realm[] = [
 ];
 
 export const REALM_LABEL: Record<Realm, string> = {
-  martial: "Martial",
+  mortal: "Mortal",
   spirit: "Spirit",
   earth: "Earth",
   heaven: "Heaven",

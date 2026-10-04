@@ -42,15 +42,15 @@
   --sc-rarity-mythic: #c2334d;
 
   /* realms, lowest first */
-  --sc-realm-martial: #8a5a2b;
-  --sc-realm-spirit: #2f7d64;
-  --sc-realm-earth: #8a6d22;
-  --sc-realm-heaven: #3d78b5;
-  --sc-realm-profound: #4a4fa3;
-  --sc-realm-dao: #4a4844;
-  --sc-realm-celestial: #22808f;
-  --sc-realm-divine: #a87a1c;
-  --sc-realm-primordial: #8c1f3a;
+  --sc-realm-mortal: #8a8175;
+  --sc-realm-spirit: #4fa86b;
+  --sc-realm-earth: #477fb3;
+  --sc-realm-heaven: #8b63b5;
+  --sc-realm-profound: #287f84;
+  --sc-realm-dao: #d6a63a;
+  --sc-realm-celestial: #55c4cf;
+  --sc-realm-divine: #c84f55;
+  --sc-realm-primordial: #e5d5a0;
 
   /* type */
   --sc-font: "EB Garamond", Georgia, "Times New Roman", serif;

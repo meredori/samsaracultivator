@@ -617,7 +617,7 @@ function Display() {
         <StatList
           stats={[
             { label: "Age", value: 18 },
-            { label: "Realm", value: "Martial" },
+            { label: "Realm", value: "Mortal" },
             { label: "Core Trait", value: "Steady", tone: "good" },
             { label: "Impurity", value: "16%", tone: "bad" },
             { label: "Stage", value: "3 / 9", note: "(Bone Tempering)" },
@@ -641,7 +641,7 @@ function CharacterSection() {
           stats={[
             { label: "Age", value: 18 },
             { label: "Lifespan", value: 73 },
-            { label: "Realm", value: "Martial" },
+            { label: "Realm", value: "Mortal" },
             { label: "Stage", value: "3 / 9", note: "(Bone Tempering)" },
             { label: "Sect", value: "Cloudridge Sect" },
             { label: "Core Trait", value: "Steady", tone: "good" },
@@ -741,12 +741,12 @@ function CharacterSection() {
       </Specimen>
 
       <Specimen title="Locked Foundation Notice">
-        <LockedNotice title="Meridian Opening" description="Reach Martial Realm Stage 6 to unlock this foundation." />
+        <LockedNotice title="Meridian Opening" description="Reach Mortal Realm Stage 6 to unlock this foundation." />
       </Specimen>
 
       <Specimen title="Small Portrait Module">
         <div className="gal-stack">
-          <PortraitCard portrait={SPRITES.idle} name="Disciple" tag="Martial" />
+          <PortraitCard portrait={SPRITES.idle} name="Disciple" tag="Mortal" />
           <PortraitCard portrait={SPRITES.contemplate} name="Elder Chen" tag="Foundation" tagTone="gold" />
         </div>
       </Specimen>

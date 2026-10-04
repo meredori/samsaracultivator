@@ -285,48 +285,66 @@
   border-color: color-mix(in srgb, var(--rarity) 45%, transparent);
 }
 
-/* realm badges: soft tints like the rarity badges */
+/* realm badges: soft tints like the rarity badges; text is a darker shade of
+   the realm colour so pale realms (Celestial, Primordial) stay readable */
 .sc-badge--realm {
   background: var(--realm-soft);
-  color: var(--realm);
-  border-color: var(--realm);
-  border-color: color-mix(in srgb, var(--realm) 45%, transparent);
+  color: var(--realm-text);
+  border-color: var(--realm-line);
 }
-.sc-realm--martial {
-  --realm: var(--sc-realm-martial);
-  --realm-soft: #f1e4d6;
+.sc-realm--mortal {
+  --realm: var(--sc-realm-mortal);
+  --realm-line: #b9b3ac;
+  --realm-soft: #eae8e6;
+  --realm-text: #6f675e;
 }
 .sc-realm--spirit {
   --realm: var(--sc-realm-spirit);
-  --realm-soft: #dcece4;
+  --realm-line: #95cba6;
+  --realm-soft: #dfefe4;
+  --realm-text: #3b704a;
 }
 .sc-realm--earth {
   --realm: var(--sc-realm-earth);
-  --realm-soft: #f2e9d0;
+  --realm-line: #91b2d1;
+  --realm-soft: #dee8f1;
+  --realm-text: #3f6b94;
 }
 .sc-realm--heaven {
   --realm: var(--sc-realm-heaven);
-  --realm-soft: #dde8f4;
+  --realm-line: #b9a1d3;
+  --realm-soft: #eae3f2;
+  --realm-text: #7a589d;
 }
 .sc-realm--profound {
   --realm: var(--sc-realm-profound);
-  --realm-soft: #e2e3f4;
+  --realm-line: #7eb2b5;
+  --realm-soft: #d8e8e9;
+  --realm-text: #267074;
 }
 .sc-realm--dao {
   --realm: var(--sc-realm-dao);
-  --realm-soft: #e8e6e1;
+  --realm-line: #e6ca89;
+  --realm-soft: #f8efdc;
+  --realm-text: #83672b;
 }
 .sc-realm--celestial {
   --realm: var(--sc-realm-celestial);
-  --realm-soft: #d9eef1;
+  --realm-line: #99dce2;
+  --realm-soft: #e0f4f6;
+  --realm-text: #396f73;
 }
 .sc-realm--divine {
   --realm: var(--sc-realm-divine);
-  --realm-soft: #f7ecd0;
+  --realm-line: #de9599;
+  --realm-soft: #f5dfe0;
+  --realm-text: #a64549;
 }
 .sc-realm--primordial {
   --realm: var(--sc-realm-primordial);
-  --realm-soft: #f3dce2;
+  --realm-line: #efe6c6;
+  --realm-soft: #faf7ee;
+  --realm-text: #776f55;
 }
 
 /* ---------- progress ---------- */
