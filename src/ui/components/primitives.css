@@ -294,57 +294,57 @@
 }
 .sc-realm--mortal {
   --realm: var(--sc-realm-mortal);
-  --realm-line: #b9b3ac;
-  --realm-soft: #eae8e6;
-  --realm-text: #6f675e;
+  --realm-line: #b9aca3;
+  --realm-soft: #eae6e3;
+  --realm-text: #746255;
 }
 .sc-realm--spirit {
   --realm: var(--sc-realm-spirit);
-  --realm-line: #95cba6;
-  --realm-soft: #dfefe4;
-  --realm-text: #3b704a;
+  --realm-line: #95b9a4;
+  --realm-soft: #dfeae4;
+  --realm-text: #3e6e52;
 }
 .sc-realm--earth {
   --realm: var(--sc-realm-earth);
-  --realm-line: #91b2d1;
-  --realm-soft: #dee8f1;
-  --realm-text: #3f6b94;
+  --realm-line: #d5a98f;
+  --realm-soft: #f2e5de;
+  --realm-text: #905736;
 }
 .sc-realm--heaven {
   --realm: var(--sc-realm-heaven);
-  --realm-line: #b9a1d3;
-  --realm-soft: #eae3f2;
-  --realm-text: #7a589d;
+  --realm-line: #a399c8;
+  --realm-soft: #e3e0ef;
+  --realm-text: #6555a4;
 }
 .sc-realm--profound {
   --realm: var(--sc-realm-profound);
-  --realm-line: #7eb2b5;
-  --realm-soft: #d8e8e9;
-  --realm-text: #267074;
+  --realm-line: #8bbabd;
+  --realm-soft: #dceaeb;
+  --realm-text: #306d71;
 }
 .sc-realm--dao {
   --realm: var(--sc-realm-dao);
-  --realm-line: #e6ca89;
-  --realm-soft: #f8efdc;
-  --realm-text: #83672b;
+  --realm-line: #d3b984;
+  --realm-soft: #f2eada;
+  --realm-text: #826324;
 }
 .sc-realm--celestial {
   --realm: var(--sc-realm-celestial);
-  --realm-line: #99dce2;
-  --realm-soft: #e0f4f6;
-  --realm-text: #396f73;
+  --realm-line: #addce0;
+  --realm-soft: #e7f4f6;
+  --realm-text: #457276;
 }
 .sc-realm--divine {
   --realm: var(--sc-realm-divine);
-  --realm-line: #de9599;
-  --realm-soft: #f5dfe0;
-  --realm-text: #a64549;
+  --realm-line: #cb939c;
+  --realm-soft: #efdfe1;
+  --realm-text: #9e4655;
 }
 .sc-realm--primordial {
   --realm: var(--sc-realm-primordial);
-  --realm-line: #efe6c6;
-  --realm-soft: #faf7ee;
-  --realm-text: #776f55;
+  --realm-line: #e6d5a9;
+  --realm-soft: #f8f2e5;
+  --realm-text: #7c6b40;
 }
 
 /* ---------- progress ---------- */
