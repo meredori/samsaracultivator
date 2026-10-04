@@ -105,6 +105,7 @@ function useRovingKeys<T extends string>(options: TabOption<T>[], value: T, onCh
     ref,
     onKeyDown(e: KeyboardEvent) {
       const enabled = options.filter((o) => !o.disabled);
+      if (enabled.length === 0) return;
       const idx = enabled.findIndex((o) => o.id === value);
       let next = -1;
       if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (idx + 1) % enabled.length;

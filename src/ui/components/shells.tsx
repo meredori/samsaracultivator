@@ -255,6 +255,11 @@ export function Modal({
 }: Omit<DialogProps, "onClose" | "titleId"> & { open: boolean; onClose: () => void }) {
   const titleId = useId();
   const ref = useRef<HTMLDivElement>(null);
+  // Read the latest onClose from a ref so an inline callback does not re-run the focus trap.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  });
 
   useEffect(() => {
     if (!open) return;
@@ -271,7 +276,7 @@ export function Modal({
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
-        onClose();
+        onCloseRef.current();
       } else if (e.key === "Tab") {
         const els = focusables();
         if (els.length === 0) return;
@@ -291,7 +296,7 @@ export function Modal({
       document.removeEventListener("keydown", onKey);
       prev?.focus();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
   return createPortal(
@@ -367,8 +372,12 @@ export function HoverTooltip({
     else if (placement === "bottom" && rect.bottom > window.innerHeight - margin) setSide("top");
   }, [open, placement, side]);
 
+  // Keep any description the trigger already has, adding the tooltip while it is open.
   const trigger = isValidElement<{ "aria-describedby"?: string }>(children)
-    ? cloneElement(children, { "aria-describedby": open ? id : undefined })
+    ? cloneElement(children, {
+        "aria-describedby":
+          [children.props["aria-describedby"], open ? id : undefined].filter(Boolean).join(" ") || undefined,
+      })
     : children;
   const show = () => setOpen(true);
   const hide = () => {

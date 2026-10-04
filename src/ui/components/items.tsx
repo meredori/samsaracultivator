@@ -142,11 +142,13 @@ export function InventoryGrid({
     () => [{ id: "all", label: "All" }, ...(filters ?? [])],
     [filters],
   );
-  const shown = filter === "all" ? items : items.filter((i) => i.category === filter);
+  // Without filter tabs there is no way back to "all", so ignore any stale choice.
+  const active = filters?.some((f) => f.id === filter) ? filter : "all";
+  const shown = active === "all" ? items : items.filter((i) => i.category === filter);
   const empties = Math.max(0, minSlots - shown.length - (onAdd ? 1 : 0));
   return (
     <div className="sc-inventory">
-      {filters && <SegmentedControl label="Filter items" options={tabs} value={filter} onChange={setFilter} />}
+      {filters && <SegmentedControl label="Filter items" options={tabs} value={active} onChange={setFilter} />}
       <div className="sc-inventory__grid">
         {shown.map((it) => (
           <ItemSlot key={it.id} item={it} selected={it.id === selectedId} onClick={onSelect && (() => onSelect(it))} />
