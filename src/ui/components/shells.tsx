@@ -281,10 +281,12 @@ export function Modal({
         if (els.length === 0) return;
         const first = els[0];
         const last = els[els.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
+        // Focus starts on the dialog itself (not in els), so wrap from there too.
+        const inside = els.includes(document.activeElement as HTMLElement);
+        if (e.shiftKey && (!inside || document.activeElement === first)) {
           e.preventDefault();
           last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
+        } else if (!e.shiftKey && (!inside || document.activeElement === last)) {
           e.preventDefault();
           first.focus();
         }

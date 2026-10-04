@@ -10,6 +10,9 @@ test("component gallery renders and its interactive pieces work", async ({ page 
   await page.locator("#shells").getByRole("button", { name: "Open as modal" }).first().click();
   const dialog = page.getByRole("dialog", { name: "Confirm Action" });
   await expect(dialog).toBeVisible();
+  // Shift+Tab from the freshly opened dialog stays inside it
+  await page.keyboard.press("Shift+Tab");
+  await expect(dialog.getByRole("button", { name: "Cancel" })).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();
 

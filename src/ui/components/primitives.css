@@ -1,3 +1,4 @@
+/* Declarations using color-mix() are preceded by a plain fallback for webviews without it (Safari 15 target). */
 /* ---------- tone and rarity variables ---------- */
 .sc-tone--navy {
   --tone: var(--sc-navy);
@@ -139,6 +140,7 @@
   --btn-border: transparent;
   box-shadow: none;
   font-weight: 600;
+  text-decoration: underline 1px currentColor;
   text-decoration: underline 1px color-mix(in srgb, currentColor 40%, transparent);
   text-underline-offset: 4px;
 }
@@ -266,6 +268,7 @@
 .sc-badge--soft {
   background: var(--tone-soft);
   color: var(--tone);
+  border-color: var(--tone);
   border-color: color-mix(in srgb, var(--tone) 35%, transparent);
 }
 .sc-tone--grey.sc-badge--soft {
@@ -278,6 +281,7 @@
 .sc-badge--rarity {
   background: var(--rarity-soft);
   color: var(--rarity);
+  border-color: var(--rarity);
   border-color: color-mix(in srgb, var(--rarity) 45%, transparent);
 }
 
@@ -285,6 +289,7 @@
 .sc-badge--realm {
   background: var(--realm-soft);
   color: var(--realm);
+  border-color: var(--realm);
   border-color: color-mix(in srgb, var(--realm) 45%, transparent);
 }
 .sc-realm--martial {
@@ -728,6 +733,9 @@
 .sc-itemicon.sc-rarity--mythic,
 .sc-itemicon.sc-rarity--legendary,
 .sc-itemicon.sc-rarity--epic {
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.7),
+    0 0 6px var(--rarity);
   box-shadow:
     inset 0 0 0 1px rgb(255 255 255 / 0.7),
     0 0 6px color-mix(in srgb, var(--rarity) 55%, transparent);

@@ -1,3 +1,4 @@
+/* Declarations using color-mix() are preceded by a plain fallback for webviews without it (Safari 15 target). */
 /* ---------- slot ---------- */
 .sc-slot {
   position: relative;
@@ -65,6 +66,9 @@
 .sc-slot.sc-rarity--mythic,
 .sc-slot.sc-rarity--epic,
 .sc-slot.sc-rarity--legendary {
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.75),
+    0 0 6px var(--rarity);
   box-shadow:
     inset 0 0 0 1px rgb(255 255 255 / 0.75),
     0 0 6px color-mix(in srgb, var(--rarity) 50%, transparent);
@@ -267,6 +271,9 @@ button.sc-reschip:hover {
   font-size: var(--sc-text-sm);
   text-align: left;
   box-shadow:
+    inset 0 0 0 1px var(--rarity),
+    var(--sc-shadow-lg);
+  box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--rarity) 60%, transparent),
     var(--sc-shadow-lg);
 }
@@ -294,6 +301,7 @@ button.sc-reschip:hover {
   color: #fff;
 }
 .sc-itemtip__head span {
+  color: #e3dece;
   color: color-mix(in srgb, var(--rarity) 55%, #fff);
 }
 .sc-itemtip dl {
@@ -318,6 +326,7 @@ button.sc-reschip:hover {
   align-items: center;
   gap: 10px;
   padding: 4px 10px 4px 4px;
+  border: 1px solid var(--rarity);
   border: 1px solid color-mix(in srgb, var(--rarity) 40%, transparent);
   border-radius: var(--sc-radius);
   background: var(--rarity-soft);
