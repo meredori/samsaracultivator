@@ -1,6 +1,8 @@
 // One incarnation's finite pool of time. In-world time only advances while an
 // action runs, so every action goes through advanceTime.
 
+import { createCultivation, type Cultivation } from "./cultivation";
+
 export const DAYS_PER_YEAR = 360;
 
 export interface Life {
@@ -9,6 +11,8 @@ export interface Life {
   /** Maximum lifespan; lifespan damage lowers this rather than adding age. */
   lifespanDays: number;
   alive: boolean;
+  /** Cultivation is part of the body, so it is lost with it. */
+  cultivation: Cultivation;
 }
 
 export function createLife(incarnation: number): Life {
@@ -17,6 +21,7 @@ export function createLife(incarnation: number): Life {
     ageDays: 16 * DAYS_PER_YEAR,
     lifespanDays: 70 * DAYS_PER_YEAR,
     alive: true,
+    cultivation: createCultivation(),
   };
 }
 

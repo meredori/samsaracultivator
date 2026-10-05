@@ -1,18 +1,9 @@
 // Static placeholder data for the UI mockup. Nothing here is a balanced or
 // final number; it mirrors the concept screen so the layout can be judged.
 
-import combat from "../assets/sprites/combat.png";
-import contemplate from "../assets/sprites/contemplate.png";
-import explore from "../assets/sprites/explore.png";
-import idle from "../assets/sprites/idle.png";
-import meditate from "../assets/sprites/meditate.png";
-import train from "../assets/sprites/train.png";
+import type { SceneKind, SpriteKey } from "../render/sprites";
 
-export type SpriteKey = "idle" | "meditate" | "explore" | "train" | "contemplate" | "combat";
-
-const SPRITES: Record<SpriteKey, string> = { idle, meditate, explore, train, contemplate, combat };
-
-export const spriteUrl = (key: SpriteKey) => SPRITES[key];
+export { spriteUrl, type SceneKind, type SpriteKey } from "../render/sprites";
 
 export type ActionId = "cultivate" | "explore" | "train" | "refine" | "recover" | "contemplate";
 
@@ -26,8 +17,6 @@ export interface ActionDef {
   /** in-game years one full cycle of the action costs */
   years: number;
 }
-
-export type SceneKind = "courtyard" | "trail" | "training" | "camp";
 
 export const ACTIONS: ActionDef[] = [
   {

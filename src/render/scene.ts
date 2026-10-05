@@ -1,5 +1,5 @@
 import { Application, Assets, Container, Graphics, Sprite, Texture, TextureStyle } from "pixi.js";
-import { spriteUrl, type SceneKind, type SpriteKey } from "./data";
+import { spriteUrl, type SceneKind, type SpriteKey } from "./sprites";
 
 // Central activity window. Everything is drawn at a low logical resolution
 // and scaled up with nearest-neighbour so it stays on a pixel grid.

@@ -1,0 +1,194 @@
+/* Game shell: header across the top, then side menu, character and the main window. */
+
+body {
+  margin: 0;
+  background: var(--sc-parchment);
+}
+
+.game {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 190px minmax(280px, 340px) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header header header"
+    "nav character overview";
+  gap: var(--sc-space-3);
+  padding: 0 var(--sc-space-3) var(--sc-space-3);
+  align-items: start;
+}
+
+/* ---------- header ---------- */
+.game-header {
+  grid-area: header;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sc-space-3) var(--sc-space-5);
+  min-height: 84px;
+  margin: 0 calc(-1 * var(--sc-space-3));
+  padding: var(--sc-space-2) var(--sc-space-4);
+  border-bottom: 1px solid var(--sc-line-strong);
+  background: linear-gradient(#f7f5ef, #e9ebe6);
+  overflow: hidden;
+}
+.game-header__painting {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.75;
+}
+.game-header__logo {
+  position: relative;
+  font-family: var(--sc-font-brush);
+  font-size: 42px;
+  line-height: 1.1;
+  color: var(--sc-ink);
+  text-shadow: 0 0 12px #f7f5ef, 0 0 4px #f7f5ef;
+  white-space: nowrap;
+}
+.game-header__clock {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 0 auto;
+  padding: 4px 6px;
+  font-size: var(--sc-text-lg);
+  background: rgb(247 245 239 / 0.8);
+}
+.game-header__clock > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+}
+.game-header__clock > div + div {
+  border-left: 1px solid var(--sc-line-strong);
+}
+.game-header__clock dt {
+  color: var(--sc-muted);
+}
+.game-header__clock dt::after {
+  content: ":";
+}
+.game-header__clock dd {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ---------- side menu ---------- */
+.game-nav {
+  grid-area: nav;
+  padding: var(--sc-space-2) 0;
+  border: 1px solid var(--sc-line);
+  background: var(--sc-paper-2);
+}
+
+/* ---------- character ---------- */
+.game-character {
+  grid-area: character;
+}
+
+/* ---------- overview ---------- */
+.game-overview {
+  grid-area: overview;
+  display: grid;
+  gap: var(--sc-space-4);
+}
+.game-scene {
+  aspect-ratio: 384 / 160;
+  width: 100%;
+  border: 1px solid var(--sc-line);
+  background: #eef0ea;
+  overflow: hidden;
+}
+.game-scene canvas {
+  display: block;
+}
+
+.game-realm {
+  display: flex;
+  align-items: center;
+  gap: var(--sc-space-4);
+}
+.game-realm__body {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.game-realm__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sc-space-2) var(--sc-space-4);
+}
+.game-realm__head h3 {
+  font-size: var(--sc-text-xl);
+  font-weight: 600;
+}
+
+.game-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 260px));
+  gap: var(--sc-space-3);
+}
+.game-death {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sc-space-3);
+  padding: var(--sc-space-3) var(--sc-space-4);
+  border: 1px solid var(--sc-line);
+  background: var(--sc-paper-sunk);
+}
+.game-death svg {
+  width: 22px;
+  height: 22px;
+  color: var(--sc-red);
+}
+.game-death p {
+  flex: 1;
+  font-size: var(--sc-text-lg);
+}
+
+/* ---------- narrower windows ---------- */
+@media (max-width: 1000px) {
+  .game {
+    grid-template-columns: 170px minmax(0, 1fr);
+    grid-template-areas:
+      "header header"
+      "nav overview"
+      "nav character";
+  }
+}
+@media (max-width: 680px) {
+  .game {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "header"
+      "nav"
+      "overview"
+      "character";
+  }
+  .game-header__logo {
+    font-size: 32px;
+  }
+  .game-header__clock {
+    margin-left: 0;
+    font-size: var(--sc-text-md);
+  }
+  .game-header__clock > div {
+    padding: 0 10px;
+  }
+  .game-nav {
+    padding: 0;
+  }
+}

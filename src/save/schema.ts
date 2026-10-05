@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { GameState } from "../sim";
+import { REALM_NAMES, STAGES_PER_REALM, type GameState } from "../sim";
 
 const u32 = z.number().int().min(0).max(0xffffffff);
 
@@ -8,11 +8,17 @@ export const LifeSchema = z.object({
   ageDays: z.number().int().nonnegative(),
   lifespanDays: z.number().int().nonnegative(),
   alive: z.boolean(),
+  cultivation: z.object({
+    realm: z.number().int().min(0).max(REALM_NAMES.length - 1),
+    stage: z.number().int().min(1).max(STAGES_PER_REALM),
+    qi: z.number().nonnegative(),
+  }),
 });
 
 export const GameStateSchema = z.object({
   version: z.literal(1),
   life: LifeSchema,
+  activity: z.enum(["idle", "cultivate"]),
   realmSeed: u32,
   rng: z.tuple([u32, u32, u32, u32]),
 });
