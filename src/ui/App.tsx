@@ -2,6 +2,7 @@ import { Hourglass, LayoutDashboard, RefreshCcw, User } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { spriteUrl, type SpriteKey } from "../render/sprites";
 import {
+  DAYS_PER_MONTH,
   DAYS_PER_YEAR,
   progressToNextLevel,
   remainingDays,
@@ -17,12 +18,14 @@ import { ActivityScene } from "./ActivityScene";
 import {
   ActionTile,
   Button,
+  HoverTooltip,
   NavList,
   Panel,
   Portrait,
   ProgressBar,
   SectionTitle,
   StatList,
+  Tooltip,
   type NavItem,
   type SceneVariant,
 } from "./components";
@@ -53,7 +56,7 @@ interface ActionDef {
   /** Title while the action runs. */
   doing: string;
   flavour: string;
-  /** Exact effects, kept quiet under the flavour text. */
+  /** Exact mechanics, shown on hover so the card itself stays clean. */
   effects?: string[];
   sprite: SpriteKey;
   scene: SceneVariant;
@@ -65,7 +68,7 @@ const ACTIONS: ActionDef[] = [
     title: "Rest",
     doing: "Resting",
     flavour: "Recover from training and injury.",
-    effects: [`+${REST_HEALTH_PER_MONTH} HP / month`],
+    effects: ["Duration: 1 month", `+${REST_HEALTH_PER_MONTH} HP`],
     sprite: "meditate",
     scene: "mist",
   },
@@ -75,8 +78,9 @@ const ACTIONS: ActionDef[] = [
     doing: "Training",
     flavour: "Practice your strikes against the nearby tree.",
     effects: [
-      `+${TRAIN_BAREHAND_PER_MONTH} Barehand Proficiency progress / month`,
-      `−${TRAIN_HEALTH_COST_PER_MONTH} HP / month`,
+      "Duration: 1 month",
+      `+${TRAIN_BAREHAND_PER_MONTH} Barehand Proficiency Progress`,
+      `−${TRAIN_HEALTH_COST_PER_MONTH} HP`,
     ],
     sprite: "train",
     scene: "forest",
@@ -161,7 +165,10 @@ function CharacterSummary() {
         stats={[
           { label: "Age", value: years(life.ageDays) },
           { label: "Lifespan", value: `${years(life.lifespanDays)} years` },
-          { label: "Remaining", value: `${years(remainingDays(life))} years` },
+          {
+            label: "Remaining",
+            value: `${years(remainingDays(life))} years (${Math.floor(remainingDays(life) / DAYS_PER_MONTH)} months)`,
+          },
           { label: "Activity", value: life.alive ? ACTIVITY_LABEL[activity] : "Dead", tone: life.alive ? undefined : "bad" },
         ]}
       />
@@ -170,18 +177,37 @@ function CharacterSummary() {
   );
 }
 
-function ActionDescription({ action }: { action: ActionDef }) {
+function ActionCard({ action, active, onClick }: { action: ActionDef; active: boolean; onClick: () => void }) {
+  const tile = (
+    <ActionTile
+      scene={{ variant: action.scene, sprite: spriteUrl(action.sprite) }}
+      title={active ? action.doing : action.title}
+      description={
+        <>
+          {action.flavour}
+          {/* the hover tooltip is visual only, so screen readers get the effects here */}
+          {action.effects && <span className="sc-visually-hidden"> {action.effects.join(", ")}.</span>}
+        </>
+      }
+      active={active}
+      onClick={onClick}
+    />
+  );
+  if (!action.effects) return tile;
   return (
-    <>
-      {action.flavour}
-      {action.effects && (
-        <span className="game-action__effects">
+    <HoverTooltip
+      content={
+        <Tooltip title={action.title}>
           {action.effects.map((e) => (
-            <span key={e}>{e}</span>
+            <span key={e} className="game-action__effect">
+              {e}
+            </span>
           ))}
-        </span>
-      )}
-    </>
+        </Tooltip>
+      }
+    >
+      {tile}
+    </HoverTooltip>
   );
 }
 
@@ -205,14 +231,7 @@ function Actions() {
   return (
     <div className="game-actions">
       {ACTIONS.map((a) => (
-        <ActionTile
-          key={a.id}
-          scene={{ variant: a.scene, sprite: spriteUrl(a.sprite) }}
-          title={activity === a.id ? a.doing : a.title}
-          description={<ActionDescription action={a} />}
-          active={activity === a.id}
-          onClick={() => toggleActivity(a.id)}
-        />
+        <ActionCard key={a.id} action={a} active={activity === a.id} onClick={() => toggleActivity(a.id)} />
       ))}
     </div>
   );

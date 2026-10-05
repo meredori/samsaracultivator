@@ -61,7 +61,7 @@ body {
 .game-main {
   grid-area: main;
   min-width: 0;
-  max-width: 980px;
+  max-width: 1240px;
 }
 .game-screen {
   display: grid;
@@ -71,7 +71,8 @@ body {
 /* overview: compact summary beside a small scene, actions below */
 .game-overview__top {
   display: grid;
-  grid-template-columns: minmax(220px, 280px) minmax(0, 420px);
+  /* the scene is the screen's anchor: about four action cards wide */
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
   align-items: start;
   gap: var(--sc-space-4);
 }
@@ -80,7 +81,6 @@ body {
   gap: var(--sc-space-3);
 }
 .game-scene {
-  aspect-ratio: 384 / 160;
   width: 100%;
   border: 1px solid var(--sc-line);
   background: #eef0ea;
@@ -92,17 +92,15 @@ body {
 
 .game-actions {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 230px));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 210px));
   gap: var(--sc-space-3);
   margin-top: var(--sc-space-2);
 }
-.game-action__effects {
-  display: block;
-  margin-top: 4px;
-  font-size: var(--sc-text-xs);
-  color: var(--sc-faint);
+/* hover tooltips wrap the tiles; let the wrapper fill its grid cell */
+.game-actions > .sc-hovertip {
+  display: flex;
 }
-.game-action__effects > span {
+.game-action__effect {
   display: block;
 }
 
@@ -151,6 +149,15 @@ body {
 }
 
 /* ---------- narrow windows ---------- */
+/* below this the summary sits above the scene so the scene keeps its size */
+@media (max-width: 1180px) {
+  .game-overview__top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .game-summary {
+    max-width: 420px;
+  }
+}
 @media (max-width: 760px) {
   .game {
     grid-template-columns: minmax(0, 1fr);

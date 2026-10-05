@@ -125,17 +125,21 @@ export class SceneRenderer {
   private rand = mulberry32(7);
 
   private host: HTMLElement;
+  private height: number;
 
-  constructor(host: HTMLElement) {
+  /** `height` (logical pixels, at least SCENE_H) adds open sky above the scene for taller windows. */
+  constructor(host: HTMLElement, height = SCENE_H) {
     this.host = host;
+    this.height = Math.max(SCENE_H, Math.round(height));
     this.ready = this.init();
   }
 
   private async init() {
     await this.app.init({
       width: SCENE_W,
-      height: SCENE_H,
-      background: 0xeef0ea,
+      height: this.height,
+      // matches the top of the sky so extra headroom reads as more sky
+      background: 0xe9ece6,
       antialias: false,
       resolution: 1,
       autoDensity: false,
@@ -152,6 +156,7 @@ export class SceneRenderer {
 
     this.hero.anchor.set(0.5, 1);
     this.world.addChild(this.far, this.mid, this.props, this.hero, this.fx);
+    this.world.y = this.height - SCENE_H;
     this.app.stage.addChild(this.world);
     await Assets.load(
       (["idle", "meditate", "explore", "train", "contemplate", "combat"] as SpriteKey[]).map(spriteUrl),

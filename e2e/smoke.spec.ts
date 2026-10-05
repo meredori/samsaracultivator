@@ -16,8 +16,14 @@ test("the opening shows only age, lifespan, health and three actions", async ({ 
   await expect(health).toHaveAttribute("aria-valuenow", "30");
   await expect(page.getByText("30 / 30")).toBeVisible();
 
+  await expect(page.getByText("54 years (648 months)")).toBeVisible();
+
   const actions = page.getByRole("region", { name: "Actions" });
   await expect(actions.getByRole("button")).toHaveCount(3);
+  // exact effects stay off the cards and show on hover
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
+  await actions.getByRole("button", { name: /^Train/ }).hover();
+  await expect(page.getByRole("tooltip")).toContainText("+10 Barehand Proficiency Progress");
 
   // training hurts; the Character tab waits for the first Barehand level (ten in-game
   // months, covered by the sim tests), so it is still hidden after the first month
@@ -25,5 +31,6 @@ test("the opening shows only age, lifespan, health and three actions", async ({ 
   await page.clock.runFor(6_000);
   await expect.poll(async () => Number(await health.getAttribute("aria-valuenow"))).toBeLessThan(30);
   await expect(page.getByRole("button", { name: "Character" })).toHaveCount(0);
+  await expect(page.getByText(/\(64[0-7] months\)/)).toBeVisible();
   expect(errors).toEqual([]);
 });
