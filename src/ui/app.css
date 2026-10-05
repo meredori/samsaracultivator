@@ -144,6 +144,12 @@ body {
   gap: var(--sc-space-2);
 }
 
+.game-proficiency__label {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sc-space-2);
+}
+
 /* ---------- narrow windows ---------- */
 @media (max-width: 760px) {
   .game {

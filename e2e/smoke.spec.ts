@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 test("the opening shows only age, lifespan, health and three actions", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(String(e)));
+  await page.clock.install();
   await page.goto("/");
   await expect(page).toHaveTitle("Samsara Cultivator");
   await expect(page.getByTestId("scene").locator("canvas")).toBeVisible();
@@ -18,13 +19,11 @@ test("the opening shows only age, lifespan, health and three actions", async ({ 
   const actions = page.getByRole("region", { name: "Actions" });
   await expect(actions.getByRole("button")).toHaveCount(3);
 
-  // training hurts and, at the first proficiency point, reveals the Character tab
+  // training hurts; the Character tab waits for the first Barehand level (ten in-game
+  // months, covered by the sim tests), so it is still hidden after the first month
   await actions.getByRole("button", { name: /^Train/ }).click();
-  await expect(page.getByRole("button", { name: "Character" })).toBeVisible();
-  expect(Number(await health.getAttribute("aria-valuenow"))).toBeLessThan(30);
-
-  await actions.getByRole("button", { name: /^Training/ }).click();
-  await page.getByRole("button", { name: "Character" }).click();
-  await expect(page.getByRole("region", { name: "Proficiencies" })).toContainText("Barehand");
+  await page.clock.runFor(6_000);
+  await expect.poll(async () => Number(await health.getAttribute("aria-valuenow"))).toBeLessThan(30);
+  await expect(page.getByRole("button", { name: "Character" })).toHaveCount(0);
   expect(errors).toEqual([]);
 });

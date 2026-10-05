@@ -3,12 +3,14 @@
 // provisional placeholders for the opening.
 
 import { heal, injure, type Body } from "./body";
+import { gainProgress } from "./proficiency";
 
 export const DAYS_PER_MONTH = 30;
 
 export type Activity = "idle" | "rest" | "train" | "explore";
 
 export const REST_HEALTH_PER_MONTH = 5;
+/** Barehand progress (not levels) per month of training against the starter tree. */
 export const TRAIN_BAREHAND_PER_MONTH = 10;
 export const TRAIN_HEALTH_COST_PER_MONTH = 1;
 
@@ -35,7 +37,7 @@ export function applyActivity(body: Body, activity: Activity, days: number): Bod
       return heal(body, REST_HEALTH_PER_MONTH * months);
     case "train": {
       const hurt = injure(body, TRAIN_HEALTH_COST_PER_MONTH * months);
-      const barehand = body.proficiencies.barehand + TRAIN_BAREHAND_PER_MONTH * months;
+      const barehand = gainProgress(body.proficiencies.barehand, TRAIN_BAREHAND_PER_MONTH * months);
       return { ...hurt, proficiencies: { ...hurt.proficiencies, barehand } };
     }
     default:

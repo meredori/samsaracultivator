@@ -3,12 +3,14 @@ import { useState, type ReactNode } from "react";
 import { spriteUrl, type SpriteKey } from "../render/sprites";
 import {
   DAYS_PER_YEAR,
+  progressToNextLevel,
   remainingDays,
   REST_HEALTH_PER_MONTH,
   TRAIN_BAREHAND_PER_MONTH,
   TRAIN_HEALTH_COST_PER_MONTH,
   type Activity,
   type Feature,
+  type Proficiency,
 } from "../sim";
 import { useGameStore } from "../state/gameStore";
 import { ActivityScene } from "./ActivityScene";
@@ -73,7 +75,7 @@ const ACTIONS: ActionDef[] = [
     doing: "Training",
     flavour: "Practice your strikes against the nearby tree.",
     effects: [
-      `+${TRAIN_BAREHAND_PER_MONTH} Barehand Proficiency / month`,
+      `+${TRAIN_BAREHAND_PER_MONTH} Barehand Proficiency progress / month`,
       `−${TRAIN_HEALTH_COST_PER_MONTH} HP / month`,
     ],
     sprite: "train",
@@ -234,7 +236,25 @@ function OverviewScreen() {
 
 /* ------------------------------------------------------------------ character */
 
-/** Revealed with the first proficiency point. Shows only what the player has discovered. */
+function ProficiencyBar({ name, proficiency }: { name: string; proficiency: Proficiency }) {
+  const need = progressToNextLevel(proficiency.level);
+  return (
+    <ProgressBar
+      label={
+        <span className="game-proficiency__label">
+          <span>{name}</span>
+          <span>Level {proficiency.level}</span>
+        </span>
+      }
+      value={proficiency.progress}
+      max={need}
+      tone="gold"
+      showValue={`${Math.floor(proficiency.progress)} / ${need}`}
+    />
+  );
+}
+
+/** Revealed with the first proficiency level. Shows only what the player has discovered. */
 function CharacterScreen() {
   const life = useGameStore((s) => s.game.life);
   const { body } = life;
@@ -255,7 +275,7 @@ function CharacterScreen() {
           </section>
           <section aria-label="Proficiencies">
             <SectionTitle>Proficiencies</SectionTitle>
-            <StatList stats={[{ label: "Barehand", value: Math.floor(body.proficiencies.barehand) }]} />
+            <ProficiencyBar name="Barehand" proficiency={body.proficiencies.barehand} />
           </section>
         </div>
       </div>

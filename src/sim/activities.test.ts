@@ -11,7 +11,7 @@ describe("opening state", () => {
   it("starts idle at full health with nothing discovered", () => {
     const g = newGame(1);
     expect(g.activity).toBe("idle");
-    expect(g.life.body).toEqual({ health: 30, maxHealth: 30, proficiencies: { barehand: 0 } });
+    expect(g.life.body).toEqual({ health: 30, maxHealth: 30, proficiencies: { barehand: { level: 0, progress: 0 } } });
     expect(g.revealed).toEqual([]);
   });
 
@@ -22,10 +22,11 @@ describe("opening state", () => {
 });
 
 describe("train", () => {
-  it("raises barehand proficiency and costs health each month", () => {
+  it("grants barehand progress, not levels, and costs health each month", () => {
     const g = spendDays(doing("train"), MONTH);
     expect(g.life.ageDays).toBe(newGame(1).life.ageDays + MONTH);
-    expect(g.life.body.proficiencies.barehand).toBeCloseTo(10);
+    expect(g.life.body.proficiencies.barehand.level).toBe(0);
+    expect(g.life.body.proficiencies.barehand.progress).toBeCloseTo(10);
     expect(g.life.body.health).toBeCloseTo(STARTING_HEALTH - 1);
   });
 
@@ -37,11 +38,11 @@ describe("train", () => {
     expect(setActivity(g, "train").activity).toBe("idle");
   });
 
-  it("reveals the Character tab at the first proficiency point", () => {
-    const early = spendDays(doing("train"), 2);
+  it("reveals the Character tab at the first proficiency level, after ten months", () => {
+    const early = spendDays(doing("train"), 10 * MONTH - 1);
     expect(early.revealed).toEqual([]);
     const g = spendDays(early, 1);
-    expect(g.life.body.proficiencies.barehand).toBeGreaterThanOrEqual(1);
+    expect(g.life.body.proficiencies.barehand.level).toBe(1);
     expect(g.revealed).toEqual(["character"]);
     expect(spendDays(g, MONTH).revealed).toEqual(["character"]);
   });
@@ -66,7 +67,7 @@ describe("explore", () => {
 
 describe("death", () => {
   it("stops every activity and keeps discoveries through reincarnation", () => {
-    const trained = spendDays(doing("train"), MONTH);
+    const trained = spendDays(doing("train"), 10 * MONTH);
     const dead = spendDays(setActivity(trained, "explore"), 1000 * DAYS_PER_YEAR);
     expect(dead.life.alive).toBe(false);
     expect(dead.activity).toBe("idle");

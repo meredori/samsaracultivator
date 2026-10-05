@@ -11,7 +11,9 @@ export const LifeSchema = z.object({
   body: z.object({
     health: z.number().nonnegative(),
     maxHealth: z.number().positive(),
-    proficiencies: z.object({ barehand: z.number().nonnegative() }),
+    proficiencies: z.object({
+      barehand: z.object({ level: z.number().int().nonnegative(), progress: z.number().nonnegative() }),
+    }),
   }),
 });
 

@@ -8,8 +8,8 @@ export type Feature = "character";
 
 /** Each feature and the moment it is discovered. */
 const DISCOVERED: Record<Feature, (life: Life) => boolean> = {
-  // the first point of any proficiency opens the Character tab
-  character: (life) => life.body.proficiencies.barehand >= 1,
+  // the first proficiency level opens the Character tab
+  character: (life) => life.body.proficiencies.barehand.level >= 1,
 };
 
 export function discover(revealed: readonly Feature[], life: Life): Feature[] {
