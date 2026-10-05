@@ -1,25 +1,102 @@
-import { Hourglass, LayoutDashboard, RefreshCcw, Sprout } from "lucide-react";
-import { useId } from "react";
-import { spriteUrl } from "../render/sprites";
-import { DAYS_PER_YEAR, qiForStage, REALM_NAMES, remainingDays, STAGES_PER_REALM } from "../sim";
+import { Hourglass, LayoutDashboard, RefreshCcw, User } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { spriteUrl, type SpriteKey } from "../render/sprites";
+import {
+  DAYS_PER_YEAR,
+  remainingDays,
+  REST_HEALTH_PER_MONTH,
+  TRAIN_BAREHAND_PER_MONTH,
+  TRAIN_HEALTH_COST_PER_MONTH,
+  type Activity,
+  type Feature,
+} from "../sim";
 import { useGameStore } from "../state/gameStore";
 import { ActivityScene } from "./ActivityScene";
 import {
   ActionTile,
   Button,
-  CharacterSheet,
-  Emblem,
   NavList,
   Panel,
+  Portrait,
   ProgressBar,
-  RealmBadge,
-  REALMS,
-  StepProgress,
+  SectionTitle,
+  StatList,
+  type NavItem,
+  type SceneVariant,
 } from "./components";
 import { useGameLoop } from "./useGameLoop";
 import "./app.css";
 
 const years = (days: number) => Math.floor(days / DAYS_PER_YEAR);
+/** Health is shown in whole points, rounded up so a scratch does not read as a lost point. */
+const hp = (health: number) => Math.ceil(health);
+
+/* ------------------------------------------------------------------ screens */
+
+type ScreenId = "overview" | "character";
+
+/** Side menu entries. One with a `feature` stays hidden until the player discovers it. */
+const SCREENS: Array<NavItem<ScreenId> & { feature?: Feature }> = [
+  { id: "overview", label: "Overview", icon: LayoutDashboard },
+  { id: "character", label: "Character", icon: User, feature: "character" },
+];
+
+/* ------------------------------------------------------------------ actions */
+
+type ActionId = Exclude<Activity, "idle">;
+
+interface ActionDef {
+  id: ActionId;
+  title: string;
+  /** Title while the action runs. */
+  doing: string;
+  flavour: string;
+  /** Exact effects, kept quiet under the flavour text. */
+  effects?: string[];
+  sprite: SpriteKey;
+  scene: SceneVariant;
+}
+
+const ACTIONS: ActionDef[] = [
+  {
+    id: "rest",
+    title: "Rest",
+    doing: "Resting",
+    flavour: "Recover from training and injury.",
+    effects: [`+${REST_HEALTH_PER_MONTH} HP / month`],
+    sprite: "meditate",
+    scene: "mist",
+  },
+  {
+    id: "train",
+    title: "Train",
+    doing: "Training",
+    flavour: "Practice your strikes against the nearby tree.",
+    effects: [
+      `+${TRAIN_BAREHAND_PER_MONTH} Barehand Proficiency / month`,
+      `−${TRAIN_HEALTH_COST_PER_MONTH} HP / month`,
+    ],
+    sprite: "train",
+    scene: "forest",
+  },
+  {
+    id: "explore",
+    title: "Explore",
+    doing: "Exploring",
+    flavour: "Search the surrounding area.",
+    sprite: "explore",
+    scene: "dawn",
+  },
+];
+
+const ACTIVITY_LABEL: Record<Activity, string> = {
+  idle: "Idle",
+  rest: "Resting",
+  train: "Training",
+  explore: "Exploring",
+};
+
+/* ------------------------------------------------------------------ shell */
 
 /** Ink-wash mountain strip behind the title bar. */
 function HeaderPainting() {
@@ -39,140 +116,171 @@ function HeaderPainting() {
 }
 
 function Header() {
-  const life = useGameStore((s) => s.game.life);
-  const { realm, stage } = life.cultivation;
   return (
     <header className="game-header">
       <HeaderPainting />
       <h1 className="game-header__logo">Samsara Cultivator</h1>
-      <dl className="game-header__clock">
-        <div>
-          <dt>Realm</dt>
-          <dd data-testid="header-realm">
-            <RealmBadge realm={REALMS[realm]} size="sm" /> Stage {stage}
-          </dd>
-        </div>
-        <div>
-          <dt>Age</dt>
-          <dd data-testid="age">
-            {years(life.ageDays)} / {years(life.lifespanDays)}
-          </dd>
-        </div>
-        <div>
-          <dt>Life</dt>
-          <dd>{life.incarnation}</dd>
-        </div>
-      </dl>
     </header>
   );
 }
 
-function SideMenu() {
+function SideMenu({ screen, onSelect }: { screen: ScreenId; onSelect: (id: ScreenId) => void }) {
+  const revealed = useGameStore((s) => s.game.revealed);
+  const items = SCREENS.filter((s) => !s.feature || revealed.includes(s.feature));
   return (
     <aside className="game-nav">
-      <NavList
-        label="Main menu"
-        items={[{ id: "overview", label: "Overview", icon: LayoutDashboard }]}
-        value="overview"
-        chevrons={false}
-      />
+      <NavList label="Main menu" items={items} value={screen} onSelect={onSelect} chevrons={false} />
     </aside>
   );
 }
 
-function CharacterPanel() {
+/* ------------------------------------------------------------------ overview */
+
+function HealthBar() {
+  const body = useGameStore((s) => s.game.life.body);
+  return (
+    <ProgressBar
+      label="Health"
+      value={body.health}
+      max={body.maxHealth}
+      tone="red"
+      showValue={`${hp(body.health)} / ${body.maxHealth}`}
+    />
+  );
+}
+
+function CharacterSummary() {
   const life = useGameStore((s) => s.game.life);
   const activity = useGameStore((s) => s.game.activity);
-  const { realm, stage } = life.cultivation;
   return (
-    <Panel title="Character" className="game-character">
-      <CharacterSheet
-        portrait={spriteUrl("idle")}
-        name="Reincarnator"
+    <div className="game-summary">
+      <StatList
+        dense
         stats={[
           { label: "Age", value: years(life.ageDays) },
-          { label: "Lifespan", value: years(life.lifespanDays) },
+          { label: "Lifespan", value: `${years(life.lifespanDays)} years` },
           { label: "Remaining", value: `${years(remainingDays(life))} years` },
-          { label: "Realm", value: REALM_NAMES[realm] },
-          { label: "Stage", value: `${stage} / ${STAGES_PER_REALM}` },
-          {
-            label: "Activity",
-            value: !life.alive ? "Dead" : activity === "cultivate" ? "Cultivating" : "Resting",
-            tone: !life.alive ? "bad" : activity === "cultivate" ? "good" : undefined,
-          },
+          { label: "Activity", value: life.alive ? ACTIVITY_LABEL[activity] : "Dead", tone: life.alive ? undefined : "bad" },
         ]}
       />
-    </Panel>
+      <HealthBar />
+    </div>
   );
 }
 
-function OverviewPanel() {
-  const life = useGameStore((s) => s.game.life);
-  const cultivating = useGameStore((s) => s.game.activity === "cultivate");
-  const toggleCultivate = useGameStore((s) => s.toggleCultivate);
-  const reincarnate = useGameStore((s) => s.reincarnate);
-  const qiId = useId();
-  const c = life.cultivation;
-  const need = qiForStage(c);
-
+function ActionDescription({ action }: { action: ActionDef }) {
   return (
-    <Panel title="Overview" className="game-overview">
-      <ActivityScene cultivating={cultivating} />
+    <>
+      {action.flavour}
+      {action.effects && (
+        <span className="game-action__effects">
+          {action.effects.map((e) => (
+            <span key={e}>{e}</span>
+          ))}
+        </span>
+      )}
+    </>
+  );
+}
 
-      <section className="game-realm" aria-label="Cultivation">
-        <Emblem icon={Sprout} tone="jade" size="lg" />
-        <div className="game-realm__body">
-          <div className="game-realm__head">
-            <h3>{REALM_NAMES[c.realm]} Realm</h3>
-            <StepProgress current={c.stage} total={STAGES_PER_REALM} tone="jade" />
-          </div>
-          <span id={qiId} className="sc-tone-muted">
-            Qi toward stage {c.stage === STAGES_PER_REALM ? "breakthrough" : c.stage + 1}
-          </span>
-          <ProgressBar
-            value={c.qi}
-            max={need}
-            showValue={`${Math.floor(c.qi)} / ${need}`}
-            aria-labelledby={qiId}
-          />
-        </div>
-      </section>
+function Actions() {
+  const alive = useGameStore((s) => s.game.life.alive);
+  const activity = useGameStore((s) => s.game.activity);
+  const toggleActivity = useGameStore((s) => s.toggleActivity);
+  const reincarnate = useGameStore((s) => s.reincarnate);
 
-      <section className="game-actions" aria-label="Actions">
-        {life.alive ? (
-          <ActionTile
-            scene={{ variant: "mist", sprite: spriteUrl("meditate"), pagoda: true }}
-            title={cultivating ? "Cultivating" : "Cultivate"}
-            description={
-              cultivating
-                ? "Gathering qi. Time passes while you sit. Click to stop."
-                : "Gather qi to advance your stage. Time passes while you cultivate."
-            }
-            active={cultivating}
-            onClick={toggleCultivate}
-          />
-        ) : (
-          <div className="game-death">
-            <Hourglass aria-hidden />
-            <p>The body is gone. You remember.</p>
-            <Button variant="primary" icon={RefreshCcw} onClick={reincarnate}>
-              Reincarnate
-            </Button>
-          </div>
-        )}
+  if (!alive) {
+    return (
+      <div className="game-death">
+        <Hourglass aria-hidden />
+        <p>The body is gone. You remember.</p>
+        <Button variant="primary" icon={RefreshCcw} onClick={reincarnate}>
+          Reincarnate
+        </Button>
+      </div>
+    );
+  }
+  return (
+    <div className="game-actions">
+      {ACTIONS.map((a) => (
+        <ActionTile
+          key={a.id}
+          scene={{ variant: a.scene, sprite: spriteUrl(a.sprite) }}
+          title={activity === a.id ? a.doing : a.title}
+          description={<ActionDescription action={a} />}
+          active={activity === a.id}
+          onClick={() => toggleActivity(a.id)}
+        />
+      ))}
+    </div>
+  );
+}
+
+function OverviewScreen() {
+  const activity = useGameStore((s) => s.game.activity);
+  return (
+    <Panel title="Overview" className="game-screen">
+      <div className="game-overview__top">
+        <CharacterSummary />
+        <ActivityScene activity={activity} />
+      </div>
+      <section aria-label="Actions">
+        <SectionTitle>Actions</SectionTitle>
+        <Actions />
       </section>
     </Panel>
   );
 }
+
+/* ------------------------------------------------------------------ character */
+
+/** Revealed with the first proficiency point. Shows only what the player has discovered. */
+function CharacterScreen() {
+  const life = useGameStore((s) => s.game.life);
+  const { body } = life;
+  return (
+    <Panel title="Character" className="game-screen">
+      <div className="game-character">
+        <Portrait src={spriteUrl("idle")} alt="" size="lg" />
+        <div className="game-character__sheets">
+          <section aria-label="Body">
+            <SectionTitle>Body</SectionTitle>
+            <HealthBar />
+            <StatList
+              stats={[
+                { label: "Age", value: years(life.ageDays) },
+                { label: "Lifespan", value: `${years(life.lifespanDays)} years` },
+              ]}
+            />
+          </section>
+          <section aria-label="Proficiencies">
+            <SectionTitle>Proficiencies</SectionTitle>
+            <StatList stats={[{ label: "Barehand", value: Math.floor(body.proficiencies.barehand) }]} />
+          </section>
+        </div>
+      </div>
+    </Panel>
+  );
+}
+
+/* ------------------------------------------------------------------ app */
+
+const SCREEN_VIEWS: Record<ScreenId, () => ReactNode> = {
+  overview: OverviewScreen,
+  character: CharacterScreen,
+};
 
 export function App() {
   useGameLoop();
+  const [screen, setScreen] = useState<ScreenId>("overview");
+  const View = SCREEN_VIEWS[screen];
   return (
     <div className="sc-root game">
       <Header />
-      <SideMenu />
-      <CharacterPanel />
-      <OverviewPanel />
+      <SideMenu screen={screen} onSelect={setScreen} />
+      <main className="game-main">
+        <View />
+      </main>
     </div>
   );
 }

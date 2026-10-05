@@ -1,4 +1,5 @@
-/* Game shell: header across the top, then side menu, character and the main window. */
+/* Game shell: header across the top, side menu, then the current screen. The
+   screens are deliberately sparse; new systems add sections as they are discovered. */
 
 body {
   margin: 0;
@@ -8,11 +9,11 @@ body {
 .game {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 190px minmax(280px, 340px) minmax(0, 1fr);
+  grid-template-columns: 190px minmax(0, 1fr);
   grid-template-rows: auto 1fr;
   grid-template-areas:
-    "header header header"
-    "nav character overview";
+    "header header"
+    "nav main";
   gap: var(--sc-space-3);
   padding: 0 var(--sc-space-3) var(--sc-space-3);
   align-items: start;
@@ -23,9 +24,7 @@ body {
   grid-area: header;
   position: relative;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: var(--sc-space-3) var(--sc-space-5);
   min-height: 84px;
   margin: 0 calc(-1 * var(--sc-space-3));
   padding: var(--sc-space-2) var(--sc-space-4);
@@ -49,37 +48,6 @@ body {
   text-shadow: 0 0 12px #f7f5ef, 0 0 4px #f7f5ef;
   white-space: nowrap;
 }
-.game-header__clock {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 0 0 auto;
-  padding: 4px 6px;
-  font-size: var(--sc-text-lg);
-  background: rgb(247 245 239 / 0.8);
-}
-.game-header__clock > div {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 16px;
-}
-.game-header__clock > div + div {
-  border-left: 1px solid var(--sc-line-strong);
-}
-.game-header__clock dt {
-  color: var(--sc-muted);
-}
-.game-header__clock dt::after {
-  content: ":";
-}
-.game-header__clock dd {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0;
-  font-weight: 500;
-}
 
 /* ---------- side menu ---------- */
 .game-nav {
@@ -89,16 +57,27 @@ body {
   background: var(--sc-paper-2);
 }
 
-/* ---------- character ---------- */
-.game-character {
-  grid-area: character;
+/* ---------- screens ---------- */
+.game-main {
+  grid-area: main;
+  min-width: 0;
+  max-width: 980px;
 }
-
-/* ---------- overview ---------- */
-.game-overview {
-  grid-area: overview;
+.game-screen {
   display: grid;
   gap: var(--sc-space-4);
+}
+
+/* overview: compact summary beside a small scene, actions below */
+.game-overview__top {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 420px);
+  align-items: start;
+  gap: var(--sc-space-4);
+}
+.game-summary {
+  display: grid;
+  gap: var(--sc-space-3);
 }
 .game-scene {
   aspect-ratio: 384 / 160;
@@ -111,40 +90,28 @@ body {
   display: block;
 }
 
-.game-realm {
-  display: flex;
-  align-items: center;
-  gap: var(--sc-space-4);
-}
-.game-realm__body {
-  flex: 1;
-  min-width: 0;
-  display: grid;
-  gap: 4px;
-}
-.game-realm__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sc-space-2) var(--sc-space-4);
-}
-.game-realm__head h3 {
-  font-size: var(--sc-text-xl);
-  font-weight: 600;
-}
-
 .game-actions {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 260px));
+  grid-template-columns: repeat(auto-fill, minmax(190px, 230px));
   gap: var(--sc-space-3);
+  margin-top: var(--sc-space-2);
 }
+.game-action__effects {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--sc-text-xs);
+  color: var(--sc-faint);
+}
+.game-action__effects > span {
+  display: block;
+}
+
 .game-death {
-  grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--sc-space-3);
+  margin-top: var(--sc-space-2);
   padding: var(--sc-space-3) var(--sc-space-4);
   border: 1px solid var(--sc-line);
   background: var(--sc-paper-sunk);
@@ -159,36 +126,46 @@ body {
   font-size: var(--sc-text-lg);
 }
 
-/* ---------- narrower windows ---------- */
-@media (max-width: 1000px) {
-  .game {
-    grid-template-columns: 170px minmax(0, 1fr);
-    grid-template-areas:
-      "header header"
-      "nav overview"
-      "nav character";
-  }
+/* character */
+.game-character {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: var(--sc-space-5);
 }
-@media (max-width: 680px) {
+.game-character__sheets {
+  flex: 1 1 260px;
+  max-width: 420px;
+  display: grid;
+  gap: var(--sc-space-5);
+}
+.game-character__sheets section {
+  display: grid;
+  gap: var(--sc-space-2);
+}
+
+/* ---------- narrow windows ---------- */
+@media (max-width: 760px) {
   .game {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
       "header"
       "nav"
-      "overview"
-      "character";
+      "main";
+  }
+  .game-header {
+    min-height: 64px;
   }
   .game-header__logo {
     font-size: 32px;
   }
-  .game-header__clock {
-    margin-left: 0;
-    font-size: var(--sc-text-md);
-  }
-  .game-header__clock > div {
-    padding: 0 10px;
-  }
   .game-nav {
     padding: 0;
+  }
+  .game-overview__top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .game-actions {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }

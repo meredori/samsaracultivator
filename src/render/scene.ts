@@ -119,6 +119,7 @@ export class SceneRenderer {
   private kind: SceneKind = "courtyard";
   private spriteKey: SpriteKey = "idle";
   private running = true;
+  private heroX?: number;
   private t = 0;
   private destroyed = false;
   private rand = mulberry32(7);
@@ -159,14 +160,17 @@ export class SceneRenderer {
     this.app.ticker.add((tk) => this.update(tk.deltaMS / 1000));
   }
 
-  async setScene(kind: SceneKind, sprite: SpriteKey, running: boolean) {
+  /** `heroX` places the character at a logical x position instead of the scene's default spot. */
+  async setScene(kind: SceneKind, sprite: SpriteKey, running: boolean, heroX?: number) {
     await this.ready;
     if (this.destroyed) return;
     const rebuild = kind !== this.kind;
     this.kind = kind;
     this.spriteKey = sprite;
     this.running = running;
+    this.heroX = heroX;
     if (rebuild) this.build();
+    else this.placeHero();
     this.hero.texture = Assets.get(spriteUrl(sprite));
   }
 
@@ -248,7 +252,15 @@ export class SceneRenderer {
       this.props.addChild(rock(60, GROUND_Y, 26, 12));
     }
 
-    this.hero.position.set(k === "training" ? 170 : 192, GROUND_Y - (k === "courtyard" ? 8 : 0));
+    this.placeHero();
+  }
+
+  private placeHero() {
+    const k = this.kind;
+    const x = this.heroX ?? (k === "training" ? 170 : 192);
+    // only the courtyard's meditation platform raises the hero off the ground
+    const onPlatform = k === "courtyard" && x >= 150 && x <= 234;
+    this.hero.position.set(x, GROUND_Y - (onPlatform ? 8 : 0));
   }
 
   private spawn(kind: Particle["kind"]) {
