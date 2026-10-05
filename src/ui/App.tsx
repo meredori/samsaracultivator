@@ -147,7 +147,7 @@ function HealthBar() {
   return (
     <ProgressBar
       label="Health"
-      value={body.health}
+      value={hp(body.health)}
       max={body.maxHealth}
       tone="red"
       showValue={`${hp(body.health)} / ${body.maxHealth}`}

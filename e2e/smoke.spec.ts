@@ -28,7 +28,7 @@ test("the opening shows only age, lifespan, health and three actions", async ({ 
   // training hurts; the Character tab waits for the first Barehand level (ten in-game
   // months, covered by the sim tests), so it is still hidden after the first month
   await actions.getByRole("button", { name: /^Train/ }).click();
-  await page.clock.runFor(6_000);
+  await page.clock.runFor(10_000);
   await expect.poll(async () => Number(await health.getAttribute("aria-valuenow"))).toBeLessThan(30);
   await expect(page.getByRole("button", { name: "Character" })).toHaveCount(0);
   await expect(page.getByText(/\(64[0-7] months\)/)).toBeVisible();

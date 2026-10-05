@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { newGame, reincarnate, setActivity, spendDays, type Activity, type GameState } from "../sim";
 
-/** In-world days that pass per real second while an activity runs (a month every 5 seconds). */
-export const DAYS_PER_SECOND = 6;
+/** In-world days that pass per real second while an activity runs (a year every 30 seconds). */
+export const DAYS_PER_SECOND = 12;
 
 interface GameStore {
   game: GameState;

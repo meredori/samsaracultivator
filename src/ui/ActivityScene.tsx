@@ -7,8 +7,8 @@ import type { Activity } from "../sim";
 const STAGING: Record<Activity, { kind: SceneKind; sprite: SpriteKey; heroX?: number }> = {
   idle: { kind: "courtyard", sprite: "idle", heroX: 140 },
   rest: { kind: "courtyard", sprite: "meditate" },
-  // the training sprite strikes a post on its right, so it stands just left of the tree
-  train: { kind: "courtyard", sprite: "train", heroX: 40 },
+  // the training sprite brings its own striking post
+  train: { kind: "courtyard", sprite: "train" },
   explore: { kind: "trail", sprite: "explore" },
 };
 
