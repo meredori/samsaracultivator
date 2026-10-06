@@ -178,6 +178,8 @@ function CharacterSummary() {
 }
 
 function ActionCard({ action, active, onClick }: { action: ActionDef; active: boolean; onClick: () => void }) {
+  // whole sim days plus the fraction of a day still in the carry, so the bar moves smoothly
+  const cycleDays = useGameStore((s) => (active ? s.game.cycleDays + s.dayCarry : 0));
   const tile = (
     <ActionTile
       scene={{ variant: action.scene, sprite: spriteUrl(action.sprite) }}
@@ -190,6 +192,7 @@ function ActionCard({ action, active, onClick }: { action: ActionDef; active: bo
         </>
       }
       active={active}
+      progress={active ? cycleDays / DAYS_PER_MONTH : undefined}
       onClick={onClick}
     />
   );

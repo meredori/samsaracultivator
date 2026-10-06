@@ -136,12 +136,15 @@ export function ActionTile({
   title,
   description,
   active,
+  progress,
   onClick,
 }: {
   scene: SceneProps;
   title: ReactNode;
   description?: ReactNode;
   active?: boolean;
+  /** 0–1 through the current cycle of a running action; shows a looping bar when set. */
+  progress?: number;
   onClick?: () => void;
 }) {
   return (
@@ -153,6 +156,10 @@ export function ActionTile({
           {description && <span className="sc-actiontile__desc">{description}</span>}
         </span>
         {onClick && <Chevron />}
+      </span>
+      {/* always rendered so tiles keep the same height whether or not they are running */}
+      <span className={cx("sc-actiontile__cycle", progress === undefined && "is-idle")} aria-hidden>
+        <span style={{ width: `${Math.max(0, Math.min(1, progress ?? 0)) * 100}%` }} />
       </span>
     </Clickable>
   );

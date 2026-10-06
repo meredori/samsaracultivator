@@ -21,6 +21,7 @@ export const GameStateSchema = z.object({
   version: z.literal(1),
   life: LifeSchema,
   activity: z.enum(["idle", "rest", "train", "explore"]),
+  cycleDays: z.number().int().nonnegative(),
   revealed: z.array(z.enum(["character"])),
   realmSeed: u32,
   rng: z.tuple([u32, u32, u32, u32]),

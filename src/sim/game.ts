@@ -1,4 +1,4 @@
-import { applyActivity, canDo, daysAvailable, type Activity } from "./activities";
+import { canDo, completeMonth, DAYS_PER_MONTH, type Activity } from "./activities";
 import { advanceTime, createLife, type Life } from "./life";
 import { discover, type Feature } from "./reveal";
 import { seedRng, type RngState } from "./rng";
@@ -8,6 +8,8 @@ export interface GameState {
   life: Life;
   /** What the character is doing. In-world time only passes while this is not idle. */
   activity: Activity;
+  /** Whole days into the running activity's current one-month cycle; effects land when it completes. */
+  cycleDays: number;
   /** Features the player has discovered; the UI shows nothing else. */
   revealed: Feature[];
   /** Seed of the current incarnation's Lower Realm. */
@@ -16,25 +18,42 @@ export interface GameState {
 }
 
 export function newGame(seed: number): GameState {
-  return { version: 1, life: createLife(1), activity: "idle", revealed: [], realmSeed: seed, rng: seedRng(seed) };
+  return { version: 1, life: createLife(1), activity: "idle", cycleDays: 0, revealed: [], realmSeed: seed, rng: seedRng(seed) };
 }
 
 export function setActivity(state: GameState, activity: Activity): GameState {
   if (!state.life.alive || !canDo(state.life.body, activity)) return state;
-  return { ...state, activity };
+  // switching or stopping abandons the partial cycle
+  return { ...state, activity, cycleDays: activity === state.activity ? state.cycleDays : 0 };
 }
 
-/** Runs the current activity for up to `days` of in-world time. Idle spends nothing. */
+/**
+ * Runs the current activity for up to `days` of in-world time, applying its
+ * effects at the end of each completed month. Idle spends nothing.
+ */
 export function spendDays(state: GameState, days: number): GameState {
   const { activity } = state;
   if (activity === "idle") return state;
-  const { life, spentDays } = advanceTime(state.life, daysAvailable(state.life.body, activity, days));
-  const next = { ...life, body: applyActivity(life.body, activity, spentDays) };
+  let { life, cycleDays } = state;
+  let left = days;
+  while (left > 0 && life.alive && canDo(life.body, activity)) {
+    const advanced = advanceTime(life, Math.min(left, DAYS_PER_MONTH - cycleDays));
+    if (advanced.spentDays === 0) break;
+    life = advanced.life;
+    left -= advanced.spentDays;
+    cycleDays += advanced.spentDays;
+    if (cycleDays === DAYS_PER_MONTH) {
+      cycleDays = 0;
+      if (life.alive) life = { ...life, body: completeMonth(life.body, activity) };
+    }
+  }
+  const running = life.alive && canDo(life.body, activity);
   return {
     ...state,
-    life: next,
-    activity: next.alive && canDo(next.body, activity) ? activity : "idle",
-    revealed: discover(state.revealed, next),
+    life,
+    activity: running ? activity : "idle",
+    cycleDays: running ? cycleDays : 0,
+    revealed: discover(state.revealed, life),
   };
 }
 
@@ -44,6 +63,7 @@ export function reincarnate(state: GameState, nextSeed: number): GameState {
     ...state,
     life: createLife(state.life.incarnation + 1),
     activity: "idle",
+    cycleDays: 0,
     realmSeed: nextSeed,
     rng: seedRng(nextSeed),
   };

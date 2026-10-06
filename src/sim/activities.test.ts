@@ -30,6 +30,23 @@ describe("train", () => {
     expect(g.life.body.health).toBeCloseTo(STARTING_HEALTH - 1);
   });
 
+  it("pays out only when a month completes", () => {
+    const partial = spendDays(doing("train"), MONTH - 1);
+    expect(partial.cycleDays).toBe(MONTH - 1);
+    expect(partial.life.body).toEqual(createBody());
+    const done = spendDays(partial, 1);
+    expect(done.cycleDays).toBe(0);
+    expect(done.life.body.proficiencies.barehand.progress).toBe(10);
+    expect(done.life.body.health).toBe(STARTING_HEALTH - 1);
+  });
+
+  it("abandons the partial month when stopped", () => {
+    const partial = spendDays(doing("train"), MONTH - 1);
+    const restarted = setActivity(setActivity(partial, "idle"), "train");
+    expect(restarted.cycleDays).toBe(0);
+    expect(spendDays(restarted, 1).life.body).toEqual(createBody());
+  });
+
   it("stops when health runs out, spending only the days it could train", () => {
     const g = spendDays(doing("train"), 1000 * MONTH);
     expect(g.life.body.health).toBe(0);

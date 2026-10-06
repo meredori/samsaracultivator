@@ -25,6 +25,7 @@ export const useGameStore = create<GameStore>()(
     toggleActivity: (activity) =>
       set((s) => {
         s.game = setActivity(s.game, s.game.activity === activity ? "idle" : activity);
+        s.dayCarry = 0;
       }),
     tick: (seconds) =>
       set((s) => {

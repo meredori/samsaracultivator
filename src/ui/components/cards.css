@@ -123,6 +123,24 @@
   color: var(--sc-muted);
 }
 
+/* looping bar for one cycle of a running action; updated every frame, so no transition */
+.sc-actiontile__cycle {
+  display: block;
+  height: 4px;
+  margin: 0 4px 2px;
+  background: #dcd8cf;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.sc-actiontile__cycle.is-idle {
+  visibility: hidden;
+}
+.sc-actiontile__cycle > span {
+  display: block;
+  height: 100%;
+  background: var(--sc-jade);
+}
+
 /* ---------- opportunity row ---------- */
 .sc-opprow {
   display: grid;

@@ -10,7 +10,6 @@ export interface Proficiencies {
 }
 
 export interface Body {
-  /** May be fractional; activities change it a little each day. */
   health: number;
   maxHealth: number;
   proficiencies: Proficiencies;
