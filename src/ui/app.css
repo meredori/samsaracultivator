@@ -1,0 +1,184 @@
+/* Game shell: header across the top, side menu, then the current screen. The
+   screens are deliberately sparse; new systems add sections as they are discovered. */
+
+body {
+  margin: 0;
+  background: var(--sc-parchment);
+}
+
+.game {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header header"
+    "nav main";
+  gap: var(--sc-space-3);
+  padding: 0 var(--sc-space-3) var(--sc-space-3);
+  align-items: start;
+}
+
+/* ---------- header ---------- */
+.game-header {
+  grid-area: header;
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 84px;
+  margin: 0 calc(-1 * var(--sc-space-3));
+  padding: var(--sc-space-2) var(--sc-space-4);
+  border-bottom: 1px solid var(--sc-line-strong);
+  background: linear-gradient(#f7f5ef, #e9ebe6);
+  overflow: hidden;
+}
+.game-header__painting {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.75;
+}
+.game-header__logo {
+  position: relative;
+  font-family: var(--sc-font-brush);
+  font-size: 42px;
+  line-height: 1.1;
+  color: var(--sc-ink);
+  text-shadow: 0 0 12px #f7f5ef, 0 0 4px #f7f5ef;
+  white-space: nowrap;
+}
+
+/* ---------- side menu ---------- */
+.game-nav {
+  grid-area: nav;
+  padding: var(--sc-space-2) 0;
+  border: 1px solid var(--sc-line);
+  background: var(--sc-paper-2);
+}
+
+/* ---------- screens ---------- */
+.game-main {
+  grid-area: main;
+  min-width: 0;
+  max-width: 1240px;
+}
+.game-screen {
+  display: grid;
+  gap: var(--sc-space-4);
+}
+
+/* overview: compact summary beside a small scene, actions below */
+.game-overview__top {
+  display: grid;
+  /* the scene is the screen's anchor: about four action cards wide */
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--sc-space-4);
+}
+.game-summary {
+  display: grid;
+  gap: var(--sc-space-3);
+}
+.game-scene {
+  width: 100%;
+  border: 1px solid var(--sc-line);
+  background: #eef0ea;
+  overflow: hidden;
+}
+.game-scene canvas {
+  display: block;
+}
+
+.game-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 210px));
+  gap: var(--sc-space-3);
+  margin-top: var(--sc-space-2);
+}
+/* hover tooltips wrap the tiles; let the wrapper fill its grid cell */
+.game-actions > .sc-hovertip {
+  display: flex;
+}
+.game-action__effect {
+  display: block;
+}
+
+.game-death {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sc-space-3);
+  margin-top: var(--sc-space-2);
+  padding: var(--sc-space-3) var(--sc-space-4);
+  border: 1px solid var(--sc-line);
+  background: var(--sc-paper-sunk);
+}
+.game-death svg {
+  width: 22px;
+  height: 22px;
+  color: var(--sc-red);
+}
+.game-death p {
+  flex: 1;
+  font-size: var(--sc-text-lg);
+}
+
+/* character */
+.game-character {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: var(--sc-space-5);
+}
+.game-character__sheets {
+  flex: 1 1 260px;
+  max-width: 420px;
+  display: grid;
+  gap: var(--sc-space-5);
+}
+.game-character__sheets section {
+  display: grid;
+  gap: var(--sc-space-2);
+}
+
+.game-proficiency__label {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sc-space-2);
+}
+
+/* ---------- narrow windows ---------- */
+/* below this the summary sits above the scene so the scene keeps its size */
+@media (max-width: 1180px) {
+  .game-overview__top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .game-summary {
+    max-width: 420px;
+  }
+}
+@media (max-width: 760px) {
+  .game {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "header"
+      "nav"
+      "main";
+  }
+  .game-header {
+    min-height: 64px;
+  }
+  .game-header__logo {
+    font-size: 32px;
+  }
+  .game-nav {
+    padding: 0;
+  }
+  .game-overview__top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .game-actions {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}

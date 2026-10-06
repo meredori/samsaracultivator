@@ -8,11 +8,21 @@ export const LifeSchema = z.object({
   ageDays: z.number().int().nonnegative(),
   lifespanDays: z.number().int().nonnegative(),
   alive: z.boolean(),
+  body: z.object({
+    health: z.number().nonnegative(),
+    maxHealth: z.number().positive(),
+    proficiencies: z.object({
+      barehand: z.object({ level: z.number().int().nonnegative(), progress: z.number().nonnegative() }),
+    }),
+  }),
 });
 
 export const GameStateSchema = z.object({
   version: z.literal(1),
   life: LifeSchema,
+  activity: z.enum(["idle", "rest", "train", "explore"]),
+  cycleDays: z.number().int().nonnegative(),
+  revealed: z.array(z.enum(["character"])),
   realmSeed: u32,
   rng: z.tuple([u32, u32, u32, u32]),
 });

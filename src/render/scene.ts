@@ -1,5 +1,5 @@
 import { Application, Assets, Container, Graphics, Sprite, Texture, TextureStyle } from "pixi.js";
-import { spriteUrl, type SceneKind, type SpriteKey } from "./data";
+import { spriteUrl, type SceneKind, type SpriteKey } from "./sprites";
 
 // Central activity window. Everything is drawn at a low logical resolution
 // and scaled up with nearest-neighbour so it stays on a pixel grid.
@@ -119,22 +119,27 @@ export class SceneRenderer {
   private kind: SceneKind = "courtyard";
   private spriteKey: SpriteKey = "idle";
   private running = true;
+  private heroX?: number;
   private t = 0;
   private destroyed = false;
   private rand = mulberry32(7);
 
   private host: HTMLElement;
+  private height: number;
 
-  constructor(host: HTMLElement) {
+  /** `height` (logical pixels, at least SCENE_H) adds open sky above the scene for taller windows. */
+  constructor(host: HTMLElement, height = SCENE_H) {
     this.host = host;
+    this.height = Math.max(SCENE_H, Math.round(height));
     this.ready = this.init();
   }
 
   private async init() {
     await this.app.init({
       width: SCENE_W,
-      height: SCENE_H,
-      background: 0xeef0ea,
+      height: this.height,
+      // matches the top of the sky so extra headroom reads as more sky
+      background: 0xe9ece6,
       antialias: false,
       resolution: 1,
       autoDensity: false,
@@ -151,6 +156,7 @@ export class SceneRenderer {
 
     this.hero.anchor.set(0.5, 1);
     this.world.addChild(this.far, this.mid, this.props, this.hero, this.fx);
+    this.world.y = this.height - SCENE_H;
     this.app.stage.addChild(this.world);
     await Assets.load(
       (["idle", "meditate", "explore", "train", "contemplate", "combat"] as SpriteKey[]).map(spriteUrl),
@@ -159,14 +165,17 @@ export class SceneRenderer {
     this.app.ticker.add((tk) => this.update(tk.deltaMS / 1000));
   }
 
-  async setScene(kind: SceneKind, sprite: SpriteKey, running: boolean) {
+  /** `heroX` places the character at a logical x position instead of the scene's default spot. */
+  async setScene(kind: SceneKind, sprite: SpriteKey, running: boolean, heroX?: number) {
     await this.ready;
     if (this.destroyed) return;
     const rebuild = kind !== this.kind;
     this.kind = kind;
     this.spriteKey = sprite;
     this.running = running;
+    this.heroX = heroX;
     if (rebuild) this.build();
+    else this.placeHero();
     this.hero.texture = Assets.get(spriteUrl(sprite));
   }
 
@@ -248,7 +257,15 @@ export class SceneRenderer {
       this.props.addChild(rock(60, GROUND_Y, 26, 12));
     }
 
-    this.hero.position.set(k === "training" ? 170 : 192, GROUND_Y - (k === "courtyard" ? 8 : 0));
+    this.placeHero();
+  }
+
+  private placeHero() {
+    const k = this.kind;
+    const x = this.heroX ?? (k === "training" ? 170 : 192);
+    // only the courtyard's meditation platform raises the hero off the ground
+    const onPlatform = k === "courtyard" && x >= 150 && x <= 234;
+    this.hero.position.set(x, GROUND_Y - (onPlatform ? 8 : 0));
   }
 
   private spawn(kind: Particle["kind"]) {

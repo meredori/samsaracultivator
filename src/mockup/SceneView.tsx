@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { ACTIONS } from "./data";
-import { SceneRenderer } from "./scene";
+import { SceneRenderer } from "../render/scene";
 import { useMock } from "./store";
 
 /** React host for the Pixi activity window; follows the selected action. */
